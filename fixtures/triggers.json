@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "code": "bounty_review_rejected",
+      "description": "图纸赏金审核驳回（假数据）",
+      "category": "work",
+      "required_fields": ["design_name", "reject_reason"]
+    },
+    {
+      "code": "bounty_review_approved",
+      "description": "图纸赏金审核通过（假数据）",
+      "category": "work",
+      "required_fields": ["design_name", "target_count"]
+    },
+    {
+      "code": "announcement_published",
+      "description": "官方公告发布（假数据）",
+      "category": "system",
+      "required_fields": ["announcement_title", "announcement_summary"]
+    }
+  ]
+}
