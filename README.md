@@ -6,11 +6,11 @@
 
 ## 当前进度
 
-| 阶段 | 状态 | 说明 |
-| ---- | ---- | ---- |
-| 0 | 笔记已建 | `notes/phase-0-concepts.md` 待填写 |
-| 1 | **Demo A 骨架** | 流式 Chat + `getWeather` + `getViewportSize` |
-| 2～4 | 占位 | `docs/`、`fixtures/`、`evals/` |
+| 阶段 | 状态            | 说明                                         |
+| ---- | --------------- | -------------------------------------------- |
+| 0    | 笔记已建        | `notes/phase-0-concepts.md` 待填写           |
+| 1    | **Demo A 骨架** | 流式 Chat + `getWeather` + `getViewportSize` |
+| 2～4 | 占位            | `docs/`、`fixtures/`、`evals/`               |
 
 ## 快速开始
 
@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 
-浏览器打开 http://localhost:3000
+浏览器打开 <http://localhost:3000>
 
 ### 试两句
 
