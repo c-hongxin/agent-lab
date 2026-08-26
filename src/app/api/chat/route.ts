@@ -1,10 +1,8 @@
 import { openai } from '@ai-sdk/openai';
 import {
   convertToModelMessages,
-  createUIMessageStreamResponse,
-  isStepCount,
+  stepCountIs,
   streamText,
-  toUIMessageStream,
   type UIMessage,
 } from 'ai';
 
@@ -24,7 +22,7 @@ export async function POST(req: Request) {
   const result = streamText({
     model: resolveModel(),
     messages: await convertToModelMessages(messages),
-    stopWhen: isStepCount(5),
+    stopWhen: stepCountIs(5),
     tools: {
       getWeather,
       getViewportSize: {
@@ -38,7 +36,5 @@ export async function POST(req: Request) {
       'Use getWeather for weather questions and getViewportSize for screen size questions.',
   });
 
-  return createUIMessageStreamResponse({
-    stream: toUIMessageStream({ stream: result.stream }),
-  });
+  return result.toUIMessageStreamResponse();
 }
