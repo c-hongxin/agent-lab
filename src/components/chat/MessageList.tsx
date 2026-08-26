@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import type { UIMessage } from 'ai';
+import type { UIMessage } from "ai";
 
-import { MessageItem } from './MessageItem';
+import { MessageItem } from "./MessageItem";
 
 export function MessageList({ messages }: { messages: UIMessage[] }) {
   if (messages.length === 0) {

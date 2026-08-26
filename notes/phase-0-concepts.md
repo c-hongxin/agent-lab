@@ -9,12 +9,12 @@
   - 看不到真实配置、调不了接口、改不了订单状态
   - 输入可能编造字段名或漏掉必填变量
 - Tool 解决什么（把“模型不会 / 不该假装知道”的事交给确定性代码）
-  - 查 mock 的 trigger 定义、校验 business_params、扫{{变量}}、按模板拼预览
+  - 查 mock 的 trigger 定义、校验 business_params、扫 {{变量}}、按模板拼预览
   - Tool 有 schema（Zod），入参可校验、失败可返回错误字符串，模型再据此改口，而不是瞎编
 - Agent Loop（对照 Cursor）：
   - 用户一句话 → 模型决定要不要用工具 → 发出 tool-call（工具名 + 参数） → 运行时执行 → 把 tool-result 写回
     消息 → 模型带着结果继续想 → 可能再调工具，知道给出最终回复
-  - CUrsor 里就是：你提问 → 模型 Read/Grep → 你看到工具卡片 → 结果进上下文 → 模型再写代码
+  - Cursor 里就是：你提问 → 模型 Read/Grep → 你看到工具卡片 → 结果进上下文 → 模型再写代码
   - 若没有 tool-result，模型等于“喊了工具但没有拿到回执”，loop 断掉
 
 ```mermaid
@@ -39,7 +39,7 @@ sequenceDiagram
 
 ```
 
-要点：生成文本≠执行工具。模型只负责“叫什么、参数是什么”，真正查库 / 校验的是代码
+要点：生成文本 ≠ 执行工具。模型只负责“叫什么、参数是什么”，真正查库 / 校验的是代码
 
 ## 2. 前端为什么要处理 tool-call / tool-result
 
@@ -57,11 +57,11 @@ sequenceDiagram
 
 - 起草通知 / 邮件文案、中英 locale 对齐、语气改写
 - 对照 trigger 说明，检查 business_params 是否缺字段
-- 扫描{{userName}}等占位符是否与模板一致
+- 扫描 {{userName}} 等占位符是否与模板一致
 - 用 mock 数据做预览卡（Generative UI）
 - 自然语言问：“某 trigger 需要哪些 business_params？”
 
-这些是建议与草稿，错了可以再改，不直接该生产状态
+这些是建议与草稿，错了可以再改，不直接改生产状态
 
 ### 必须留在表单 / 审核流（执行层）
 
@@ -95,8 +95,8 @@ Agent 止于草稿与预览；人确认后仍走 B 端表单与 API
 
 口头版
 
-- LLM只会写字
-- Tool负责查和算
+- LLM 只会写字
+- Tool 负责查和算
 - 两者用 tool-call / tool-result 转圈才是 Agent
 - 前端要把这和一圈画成卡片状态，并把结果送回模型
 - 通知工作台里 Agent 当副驾，审核和发送仍走原来的表单

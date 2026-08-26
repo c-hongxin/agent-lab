@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { useChat } from '@ai-sdk/react';
+import { useChat } from "@ai-sdk/react";
 import {
   DefaultChatTransport,
   lastAssistantMessageIsCompleteWithToolCalls,
-} from 'ai';
-import { useState } from 'react';
+} from "ai";
+import { useState } from "react";
 
-import { readViewportSize } from '@/lib/tools/client-tools';
+import { readViewportSize } from "@/lib/tools/client-tools";
 
-import { ChatInput } from './ChatInput';
-import { MessageList } from './MessageList';
+import { ChatInput } from "./ChatInput";
+import { MessageList } from "./MessageList";
 
 export function ChatPage() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const { messages, sendMessage, addToolOutput, status, stop } = useChat({
     transport: new DefaultChatTransport({
-      api: '/api/chat',
+      api: "/api/chat",
     }),
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
     async onToolCall({ toolCall }) {
@@ -25,9 +25,9 @@ export function ChatPage() {
         return;
       }
 
-      if (toolCall.toolName === 'getViewportSize') {
+      if (toolCall.toolName === "getViewportSize") {
         addToolOutput({
-          tool: 'getViewportSize',
+          tool: "getViewportSize",
           toolCallId: toolCall.toolCallId,
           output: readViewportSize(),
         });
@@ -35,7 +35,7 @@ export function ChatPage() {
     },
   });
 
-  const isBusy = status === 'streaming' || status === 'submitted';
+  const isBusy = status === "streaming" || status === "submitted";
 
   return (
     <div className="mx-auto flex h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 py-6">
@@ -59,7 +59,7 @@ export function ChatPage() {
             return;
           }
           sendMessage({ text });
-          setInput('');
+          setInput("");
         }}
       />
     </div>

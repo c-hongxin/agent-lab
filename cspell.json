@@ -1,0 +1,22 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignorePaths": [
+    "node_modules",
+    "package-lock.json",
+    ".next",
+    "**/*.lock"
+  ],
+  "ignoreRegExpList": [
+    "/[0-9A-Fa-f]{6}/"
+  ],
+  "words": [
+    "argb",
+    "defval",
+    "evals",
+    "exceljs",
+    "HITL",
+    "langchain",
+    "libresensing"
+  ]
+}

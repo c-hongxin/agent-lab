@@ -1,18 +1,18 @@
-import { openai } from '@ai-sdk/openai';
+import { openai } from "@ai-sdk/openai";
 import {
   convertToModelMessages,
   stepCountIs,
   streamText,
   type UIMessage,
-} from 'ai';
+} from "ai";
 
-import { getWeather } from '@/lib/tools/server-tools';
-import { getViewportSizeSchema } from '@/lib/tools/client-tools';
+import { getWeather } from "@/lib/tools/server-tools";
+import { getViewportSizeSchema } from "@/lib/tools/client-tools";
 
 export const maxDuration = 30;
 
 function resolveModel() {
-  const modelId = process.env.OPENAI_MODEL ?? 'gpt-4o';
+  const modelId = process.env.OPENAI_MODEL ?? "gpt-4o";
   return openai(modelId);
 }
 
@@ -27,13 +27,13 @@ export async function POST(req: Request) {
       getWeather,
       getViewportSize: {
         description:
-          'Get the browser viewport width and height in pixels. Use when the user asks about screen or window size.',
+          "Get the browser viewport width and height in pixels. Use when the user asks about screen or window size.",
         inputSchema: getViewportSizeSchema,
       },
     },
     system:
-      'You are a helpful assistant in the agent-lab demo. ' +
-      'Use getWeather for weather questions and getViewportSize for screen size questions.',
+      "You are a helpful assistant in the agent-lab demo. " +
+      "Use getWeather for weather questions and getViewportSize for screen size questions.",
   });
 
   return result.toUIMessageStreamResponse();
