@@ -1,0 +1,15 @@
+﻿{
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": "explicit"
+    }
+  },
+  "markdownAutoSpace.formatOnSave": true,
+  "markdownAutoSpace.formatOnDocument": false,
+  "markdownAutoSpace.diagnostics.enable": true,
+  "markdownAutoSpace.rules": {
+    "MAS009": false
+  }
+}
