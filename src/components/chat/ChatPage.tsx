@@ -42,7 +42,7 @@ export function ChatPage() {
       <header className="mb-4">
         <h1 className="text-xl font-semibold">agent-lab · Demo A</h1>
         <p className="text-sm text-zinc-500">
-          流式 Chat + 服务端 getWeather + 客户端 getViewportSize
+          流式 Chat（DeepSeek Flash）+ 服务端 getWeather + 客户端 getViewportSize
         </p>
       </header>
 

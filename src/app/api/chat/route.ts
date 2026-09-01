@@ -1,4 +1,4 @@
-import { openai } from "@ai-sdk/openai";
+import { createOpenAI } from "@ai-sdk/openai";
 import {
   convertToModelMessages,
   stepCountIs,
@@ -12,8 +12,18 @@ import { getViewportSizeSchema } from "@/lib/tools/client-tools";
 export const maxDuration = 30;
 
 function resolveModel() {
-  const modelId = process.env.OPENAI_MODEL ?? "gpt-4o";
-  return openai(modelId);
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing DEEPSEEK_API_KEY. Copy .env.example to .env.local and fill it in.");
+  }
+
+  const deepseek = createOpenAI({
+    apiKey,
+    baseURL: "https://api.deepseek.com/v1",
+  });
+
+  const modelId = process.env.DEEPSEEK_MODEL ?? "deepseek-v4-flash";
+  return deepseek(modelId);
 }
 
 export async function POST(req: Request) {

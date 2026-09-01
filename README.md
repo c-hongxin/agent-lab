@@ -17,7 +17,7 @@
 ```powershell
 cd C:\Users\HP\Desktop\agent-lab
 copy .env.example .env.local
-# 编辑 .env.local，填入 OPENAI_API_KEY
+# 编辑 .env.local，填入 DEEPSEEK_API_KEY（https://platform.deepseek.com）
 
 npm install
 npm run dev
