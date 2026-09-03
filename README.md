@@ -2,7 +2,7 @@
 
 前端 Agent 工程练习仓库（与 `web-community-platform` 分离）。
 
-完整学习路线见仓库内 **[工程师学习.md](./工程师学习.md)**。
+完整学习路线见 **[工程师学习.md](./工程师学习.md)**（按 Demo 拆在 [`docs/learning/`](./docs/learning/)）。
 
 ## 当前进度
 
@@ -34,9 +34,12 @@ npm run dev
 
 ```text
 agent-lab/
-  工程师学习.md          # 学习方案（主文档）
+  工程师学习.md          # 学习方案索引（按 Demo 拆文件）
   notes/                 # 阶段笔记
-  docs/                  # 架构 / 状态机 / MCP
+  docs/
+    learning/            # Demo A / B / C 与阶段 0、4
+    architecture.md      # 架构 / 状态机 / MCP 等
+    product.md
   fixtures/              # 自造 trigger（Demo C）
   evals/                 # 评测（阶段 4）
   packages/              # 后续 agent-ui、copy-schema
