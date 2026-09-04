@@ -14,7 +14,9 @@ export const maxDuration = 30;
 function resolveModel() {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
-    throw new Error("Missing DEEPSEEK_API_KEY. Copy .env.example to .env.local and fill it in.");
+    throw new Error(
+      "Missing DEEPSEEK_API_KEY. Copy .env.example to .env.local and fill it in.",
+    );
   }
 
   const deepseek = createOpenAI({
@@ -44,6 +46,7 @@ export async function POST(req: Request) {
     system:
       "You are a helpful assistant in the agent-lab demo. " +
       "Use getWeather for weather questions and getViewportSize for screen size questions.",
+    abortSignal: req.signal,
   });
 
   return result.toUIMessageStreamResponse();

@@ -15,6 +15,8 @@ import { MessageList } from "./MessageList";
 export function ChatPage() {
   const [input, setInput] = useState("");
 
+  const [stopped, setStopped] = useState(false);
+
   const { messages, sendMessage, addToolOutput, status, stop } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
@@ -42,17 +44,21 @@ export function ChatPage() {
       <header className="mb-4">
         <h1 className="text-xl font-semibold">agent-lab · Demo A</h1>
         <p className="text-sm text-zinc-500">
-          流式 Chat（DeepSeek Flash）+ 服务端 getWeather + 客户端 getViewportSize
+          流式 Chat（DeepSeek Flash）+ 服务端 getWeather + 客户端
+          getViewportSize
         </p>
       </header>
 
-      <MessageList messages={messages} />
+      <MessageList messages={messages} stopped={stopped} />
 
       <ChatInput
         input={input}
         isBusy={isBusy}
         onInputChange={setInput}
-        onStop={() => stop()}
+        onStop={() => {
+          stop();
+          setStopped(true);
+        }}
         onSubmit={() => {
           const text = input.trim();
           if (!text || isBusy) {
@@ -60,6 +66,7 @@ export function ChatPage() {
           }
           sendMessage({ text });
           setInput("");
+          setStopped(false);
         }}
       />
     </div>
