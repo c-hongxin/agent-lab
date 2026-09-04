@@ -25,7 +25,9 @@ function resolveModel() {
   });
 
   const modelId = process.env.DEEPSEEK_MODEL ?? "deepseek-v4-flash";
-  return deepseek(modelId);
+  // DeepSeek 的 OpenAI 兼容层用 Chat Completions；默认 openai() 会打 /v1/responses，
+  // 多轮带 tool-result 时会 400：No tool call found for tool output with call_id …
+  return deepseek.chat(modelId);
 }
 
 export async function POST(req: Request) {

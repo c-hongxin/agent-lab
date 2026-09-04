@@ -17,25 +17,27 @@ export function ChatPage() {
 
   const [stopped, setStopped] = useState(false);
 
-  const { messages, sendMessage, addToolOutput, status, stop } = useChat({
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-    }),
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
-    async onToolCall({ toolCall }) {
-      if (toolCall.dynamic) {
-        return;
-      }
+  const { messages, sendMessage, addToolOutput, status, stop, error } = useChat(
+    {
+      transport: new DefaultChatTransport({
+        api: "/api/chat",
+      }),
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
+      async onToolCall({ toolCall }) {
+        if (toolCall.dynamic) {
+          return;
+        }
 
-      if (toolCall.toolName === "getViewportSize") {
-        addToolOutput({
-          tool: "getViewportSize",
-          toolCallId: toolCall.toolCallId,
-          output: readViewportSize(),
-        });
-      }
+        if (toolCall.toolName === "getViewportSize") {
+          addToolOutput({
+            tool: "getViewportSize",
+            toolCallId: toolCall.toolCallId,
+            output: readViewportSize(),
+          });
+        }
+      },
     },
-  });
+  );
 
   const isBusy = status === "streaming" || status === "submitted";
 
@@ -50,6 +52,10 @@ export function ChatPage() {
       </header>
 
       <MessageList messages={messages} stopped={stopped} />
+
+      {error ? (
+        <p className="mb-2 text-sm text-red-600">请求失败：{error.message}</p>
+      ) : null}
 
       <ChatInput
         input={input}
