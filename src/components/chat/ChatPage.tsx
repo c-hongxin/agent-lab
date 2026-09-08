@@ -15,25 +15,29 @@ import { MessageList } from "./MessageList";
 export function ChatPage() {
   const [input, setInput] = useState("");
 
-  const { messages, sendMessage, addToolOutput, status, stop } = useChat({
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-    }),
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
-    async onToolCall({ toolCall }) {
-      if (toolCall.dynamic) {
-        return;
-      }
+  const [stopped, setStopped] = useState(false);
 
-      if (toolCall.toolName === "getViewportSize") {
-        addToolOutput({
-          tool: "getViewportSize",
-          toolCallId: toolCall.toolCallId,
-          output: readViewportSize(),
-        });
-      }
+  const { messages, sendMessage, addToolOutput, status, stop, error } = useChat(
+    {
+      transport: new DefaultChatTransport({
+        api: "/api/chat",
+      }),
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
+      async onToolCall({ toolCall }) {
+        if (toolCall.dynamic) {
+          return;
+        }
+
+        if (toolCall.toolName === "getViewportSize") {
+          addToolOutput({
+            tool: "getViewportSize",
+            toolCallId: toolCall.toolCallId,
+            output: readViewportSize(),
+          });
+        }
+      },
     },
-  });
+  );
 
   const isBusy = status === "streaming" || status === "submitted";
 
@@ -42,17 +46,25 @@ export function ChatPage() {
       <header className="mb-4">
         <h1 className="text-xl font-semibold">agent-lab · Demo A</h1>
         <p className="text-sm text-zinc-500">
-          流式 Chat + 服务端 getWeather + 客户端 getViewportSize
+          流式 Chat（DeepSeek Flash）+ 服务端 getWeather + 客户端
+          getViewportSize
         </p>
       </header>
 
-      <MessageList messages={messages} />
+      <MessageList messages={messages} stopped={stopped} />
+
+      {error ? (
+        <p className="mb-2 text-sm text-red-600">请求失败：{error.message}</p>
+      ) : null}
 
       <ChatInput
         input={input}
         isBusy={isBusy}
         onInputChange={setInput}
-        onStop={() => stop()}
+        onStop={() => {
+          stop();
+          setStopped(true);
+        }}
         onSubmit={() => {
           const text = input.trim();
           if (!text || isBusy) {
@@ -60,6 +72,7 @@ export function ChatPage() {
           }
           sendMessage({ text });
           setInput("");
+          setStopped(false);
         }}
       />
     </div>

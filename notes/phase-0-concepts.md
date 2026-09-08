@@ -1,6 +1,6 @@
 # 阶段 0：Agent 概念笔记
 
-> 按 `工程师学习.md` §4.3 模板填写。用自己的话写，不要大段粘贴译文。
+> 按 `docs/learning/01-phase-0.md` 笔记模板填写。用自己的话写，不要大段粘贴译文。
 
 ## 1. LLM vs Tool vs Agent Loop
 
