@@ -55,12 +55,12 @@
 
 | 天  | 任务概要                     | 勾选 |
 | --- | ---------------------------- | ---- |
-| D1  | 初始化仓库 + Getting Started | [ ]  |
-| D2  | Tools 文档 + 服务端 tool     | [ ]  |
-| D3  | Tool Usage + `parts` 分渲染  | [ ]  |
-| D4  | 客户端 tool + `ToolCallCard` | [ ]  |
-| D5  | Stop + 拆 `MessageList`      | [ ]  |
-| D6  | Zod 入参校验 + 错误态 UI     | [ ]  |
+| D1  | 初始化仓库 + Getting Started | [√]  |
+| D2  | Tools 文档 + 服务端 tool     | [√]  |
+| D3  | Tool Usage + `parts` 分渲染  | [√]  |
+| D4  | 客户端 tool + `ToolCallCard` | [√]  |
+| D5  | Stop + 拆 `MessageList`      | [√]  |
+| D6  | Zod 入参校验 + 错误态 UI     | [√]  |
 | D7  | Demo A README + 对照验收     | [ ]  |
 
 **每日要点**
