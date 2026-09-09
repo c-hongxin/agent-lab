@@ -61,7 +61,7 @@
 | D4  | 客户端 tool + `ToolCallCard` | [√]  |
 | D5  | Stop + 拆 `MessageList`      | [√]  |
 | D6  | Zod 入参校验 + 错误态 UI     | [√]  |
-| D7  | Demo A README + 对照验收     | [ ]  |
+| D7  | Demo A README + 对照验收     | [√]  |
 
 **每日要点**
 
@@ -150,12 +150,12 @@ agent-lab/
 
 ## 验收标准
 
-- [ ] 问「北京天气怎么样」能触发 `getWeather` 并在 UI 看到 tool 卡片
-- [ ] 问「我屏幕多宽」能触发客户端 tool 并显示宽高
-- [ ] 长回复过程中点 Stop，流立即停止
-- [ ] 刷新页面后理解：会话是否持久化（本阶段 **可不持久化**，但 README 里说明）
-- [ ] 能打开 React DevTools，指出 `MessageList` / `ToolCallCard` 拆分
-- [ ] **不能** 在浏览器 Network 里看到 API Key
+- [√] 问「北京天气怎么样」能触发 `getWeather` 并在 UI 看到 tool 卡片
+- [√] 问「我屏幕多宽」能触发客户端 tool 并显示宽高
+- [√] 长回复过程中点 Stop，流立即停止
+- [√] 刷新页面后理解：会话是否持久化（本阶段 **可不持久化**，但 README 里说明）
+- [√] 能打开 React DevTools，指出 `MessageList` / `ToolCallCard` 拆分
+- [√] **不能** 在浏览器 Network 里看到 API Key
 
 ## 常见卡点
 
