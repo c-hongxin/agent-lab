@@ -18,8 +18,9 @@
 
 ## 要做什么（按顺序）
 
-- [ ] **Fork 或分支**：从 Demo A 拉出 `demo-b` 分支（仍在练习仓库）
-- [ ] 跑通官方 HITL 最小示例（可单独路由，再合并进主 Chat）
+- [√] **Fork 或分支**：从 Demo A 拉出 `demo-b` 分支（仍在练习仓库）
+- [√] 跑通官方 HITL 最小示例（可单独路由，再合并进主 Chat）  
+  → 打开 [`/hitl`](../../src/app/hitl/page.tsx)：AI SDK 5 无 `needsApproval`，用「无 execute + 批准/拒绝后再 `addToolOutput`」等价实现；API：`/api/hitl`
 - [ ] 新增 **写操作 tool**（二选一或都要）：
   - `publishCopy`：模拟「发布文案」
   - `sendTestEmail`：模拟「试发邮件」

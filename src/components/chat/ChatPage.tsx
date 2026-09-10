@@ -5,6 +5,7 @@ import {
   DefaultChatTransport,
   lastAssistantMessageIsCompleteWithToolCalls,
 } from "ai";
+import Link from "next/link";
 import { useState } from "react";
 
 import { readViewportSize } from "@/lib/tools/client-tools";
@@ -48,6 +49,11 @@ export function ChatPage() {
         <p className="text-sm text-zinc-500">
           流式 Chat（DeepSeek Flash）+ 服务端 getWeather + 客户端
           getViewportSize
+        </p>
+        <p className="mt-1 text-sm">
+          <Link href="/hitl" className="text-blue-600 hover:underline">
+            Demo B · HITL 最小示例 →
+          </Link>
         </p>
       </header>
 
