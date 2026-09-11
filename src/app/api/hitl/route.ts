@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import { resolveModel } from "@/lib/ai/resolve-model";
 
-import { publishCopy } from "@/lib/tools/write-tools";
+import { publishCopy, sendTestEmail } from "@/lib/tools/write-tools";
 
 export const maxDuration = 30;
 
@@ -35,11 +35,12 @@ export async function POST(req: Request) {
     model: resolveModel(),
     messages: await convertToModelMessages(messages),
     stopWhen: stepCountIs(5),
-    tools: { getWeatherInformation, publishCopy },
+    tools: { getWeatherInformation, publishCopy, sendTestEmail },
     system:
       "You are a helpful assistant for the HITL mini demo. " +
       "When the user asks about weather, call getWeatherInformation. " +
       "When the user asks to publish a notification, call publishCopy with title and content. " +
+      "When the user asks to send a test email / 试发邮件, call sendTestEmail with to, subject, and body. " +
       "If a tool execution is denied or fails because the user refused, " +
       "do not retry the same tool; tell the user the action was not performed.",
     abortSignal: req.signal,

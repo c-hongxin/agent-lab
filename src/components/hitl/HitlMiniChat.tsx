@@ -19,6 +19,16 @@ function fakePublishResult(title: string) {
   };
 }
 
+function fakeSendTestEmailResult(to: string, subject: string) {
+  return {
+    ok: true,
+    messageId: `msg_${Date.now()}`,
+    to,
+    subject,
+    sentAt: new Date().toISOString(),
+  };
+}
+
 function fakeWeather() {
   return WEATHER_OPTIONS[Math.floor(Math.random() * WEATHER_OPTIONS.length)];
 }
@@ -54,8 +64,9 @@ export function HitlMiniChat() {
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-1 py-2">
         {messages.length === 0 ? (
           <p className="m-auto text-sm text-zinc-500">
-            试试：「北京天气怎么样？」 或
-            「发布文案：标题是“测试标题”，内容是“测试内容”」
+            试试：「北京天气怎么样？」 /
+            「发布文案：标题是测试标题，内容是测试内容」 /
+            「试发邮件给 test@example.com，主题是问候，正文是你好」
           </p>
         ) : null}
 
@@ -256,6 +267,107 @@ export function HitlMiniChat() {
                   </p>
                 );
               }
+
+              if (part.type === "tool-sendTestEmail") {
+                const to =
+                  part.input &&
+                  typeof part.input === "object" &&
+                  "to" in part.input
+                    ? String((part.input as { to?: string }).to ?? "")
+                    : "";
+                const subject =
+                  part.input &&
+                  typeof part.input === "object" &&
+                  "subject" in part.input
+                    ? String((part.input as { subject?: string }).subject ?? "")
+                    : "";
+                const body =
+                  part.input &&
+                  typeof part.input === "object" &&
+                  "body" in part.input
+                    ? String((part.input as { body?: string }).body ?? "")
+                    : "";
+
+                if (part.state === "input-available") {
+                  return (
+                    <div
+                      key={part.toolCallId}
+                      className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950"
+                    >
+                      <p className="mb-2 font-medium text-amber-900 dark:text-amber-100">
+                        等待确认：试发邮件？
+                      </p>
+                      <p className="mb-1 text-xs">收件人：{to || "无"}</p>
+                      <p className="mb-1 text-xs">主题：{subject || "无"}</p>
+                      <p className="mb-2 text-xs whitespace-pre-wrap">
+                        正文：{body || "无"}
+                      </p>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
+                          onClick={() => {
+                            void addToolOutput({
+                              tool: "sendTestEmail",
+                              toolCallId: part.toolCallId,
+                              output: fakeSendTestEmailResult(to, subject),
+                            });
+                          }}
+                        >
+                          批准
+                        </button>
+                        <button
+                          type="button"
+                          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs dark:border-zinc-600"
+                          onClick={() => {
+                            void addToolOutput({
+                              state: "output-error",
+                              tool: "sendTestEmail",
+                              toolCallId: part.toolCallId,
+                              errorText: "User denied sending the test email.",
+                            });
+                          }}
+                        >
+                          拒绝
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (part.state === "output-available") {
+                  return (
+                    <p
+                      key={part.toolCallId}
+                      className="mt-2 text-sm text-emerald-700 dark:text-emerald-300"
+                    >
+                      {JSON.stringify(part.output, null, 2)}
+                    </p>
+                  );
+                }
+
+                if (part.state === "output-error") {
+                  return (
+                    <p
+                      key={part.toolCallId}
+                      className="mt-2 text-sm text-red-600"
+                    >
+                      {part.errorText}
+                    </p>
+                  );
+                }
+
+                return (
+                  <p
+                    key={part.toolCallId}
+                    className="mt-2 text-xs text-zinc-500"
+                  >
+                    tool 状态：{part.state}
+                  </p>
+                );
+              }
+
+              return null;
             })}
           </div>
         ))}
