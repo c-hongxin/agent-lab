@@ -37,7 +37,16 @@ function fakeWeather() {
 export function HitlMiniChat() {
   const [input, setInput] = useState("");
 
-  const { messages, sendMessage, addToolOutput, status, error } = useChat({
+  const {
+    messages,
+    sendMessage,
+    addToolOutput,
+    status,
+    error,
+    regenerate,
+    clearError,
+    setMessages,
+  } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/hitl",
     }),
@@ -45,6 +54,27 @@ export function HitlMiniChat() {
   });
 
   const isBusy = status === "streaming" || status === "submitted";
+
+  function getMessageText(message: (typeof messages)[number]) {
+    return message.parts
+      .filter((part) => part.type === "text")
+      .map((part) => part.text)
+      .join("");
+  }
+
+  function editLastUserMessage() {
+    const lastUserIndex = messages.findLastIndex(
+      (message) => message.role === "user",
+    );
+    if (lastUserIndex === -1) {
+      return;
+    }
+
+    const lastUser = messages[lastUserIndex];
+    setInput(getMessageText(lastUser));
+    setMessages(messages.slice(0, lastUserIndex));
+    clearError();
+  }
 
   return (
     <div className="mx-auto flex h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 py-6">
@@ -411,7 +441,27 @@ export function HitlMiniChat() {
       </div>
 
       {error ? (
-        <p className="mb-2 text-sm text-red-600">请求失败：{error.message}</p>
+        <div className="mb-2 flex flex-wrap items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm dark:border-red-900 dark:bg-red-950">
+          <p className="flex-1">请求失败：{error.message}</p>
+          <button
+            type="button"
+            className="rounded-md bg-zinc-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-700"
+            onClick={editLastUserMessage}
+          >
+            编辑
+          </button>
+          <button
+            type="button"
+            disabled={isBusy}
+            className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
+            onClick={() => {
+              clearError();
+              void regenerate();
+            }}
+          >
+            重新生成
+          </button>
+        </div>
       ) : null}
 
       <form

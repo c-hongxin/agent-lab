@@ -27,7 +27,7 @@
 - [√] 上述 tool 必须 **`requireApproval`** 或等价 HITL 流程：UI 出确认卡 → 用户点批准 / 拒绝 → 再产生 tool-result  
   → 已在 `/hitl` 用「无 execute + 批准 / 拒绝后再 `addToolOutput`」跑通 `publishCopy` / `sendTestEmail`
 - [√] 新增 **Generative UI**：`previewNotification` 返回结构化数据，前端渲染 **通知预览卡**（标题、正文、CTA 按钮文案——全部用假数据）
-- [ ] 实现 **Retry**：失败后允许用户编辑上一条消息或点重试
+- [√] 实现 **Retry**：失败后允许用户编辑上一条消息或点重试
 - [ ] 写 `docs/demo-b-state-machine.md`：状态枚举 + 转移表
 
 ## UI 方案（二选一，Week 3 前定稿）
