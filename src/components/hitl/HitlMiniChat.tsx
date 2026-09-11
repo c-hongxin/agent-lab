@@ -10,6 +10,15 @@ import { useState } from "react";
 
 const WEATHER_OPTIONS = ["sunny", "cloudy", "rainy", "snowy"] as const;
 
+function fakePublishResult(title: string) {
+  return {
+    ok: true,
+    id: `copy_${Date.now()}`,
+    title,
+    publishedAt: new Date().toISOString(),
+  };
+}
+
 function fakeWeather() {
   return WEATHER_OPTIONS[Math.floor(Math.random() * WEATHER_OPTIONS.length)];
 }
@@ -45,7 +54,8 @@ export function HitlMiniChat() {
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-1 py-2">
         {messages.length === 0 ? (
           <p className="m-auto text-sm text-zinc-500">
-            试试：「北京天气怎么样？」
+            试试：「北京天气怎么样？」 或
+            「发布文案：标题是“测试标题”，内容是“测试内容”」
           </p>
         ) : null}
 
@@ -73,86 +83,179 @@ export function HitlMiniChat() {
                 );
               }
 
-              if (part.type !== "tool-getWeatherInformation") {
-                return null;
-              }
+              if (part.type === "tool-getWeatherInformation") {
+                const city =
+                  part.input &&
+                  typeof part.input === "object" &&
+                  "city" in part.input
+                    ? String((part.input as { city?: string }).city ?? "")
+                    : "";
 
-              const city =
-                part.input &&
-                typeof part.input === "object" &&
-                "city" in part.input
-                  ? String((part.input as { city?: string }).city ?? "")
-                  : "";
-
-              if (part.state === "input-available") {
-                return (
-                  <div
-                    key={part.toolCallId}
-                    className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950"
-                  >
-                    <p className="mb-2 font-medium text-amber-900 dark:text-amber-100">
-                      等待确认：查询 {city || "该城市"} 的天气？
-                    </p>
-                    <div className="flex gap-2">
-                      <button
-                        type="button"
-                        className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
-                        onClick={() => {
-                          void addToolOutput({
-                            tool: "getWeatherInformation",
-                            toolCallId: part.toolCallId,
-                            output: fakeWeather(),
-                          });
-                        }}
-                      >
-                        批准
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs dark:border-zinc-600"
-                        onClick={() => {
-                          void addToolOutput({
-                            state: "output-error",
-                            tool: "getWeatherInformation",
-                            toolCallId: part.toolCallId,
-                            errorText: "User denied the weather request.",
-                          });
-                        }}
-                      >
-                        拒绝
-                      </button>
+                if (part.state === "input-available") {
+                  return (
+                    <div
+                      key={part.toolCallId}
+                      className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950"
+                    >
+                      <p className="mb-2 font-medium text-amber-900 dark:text-amber-100">
+                        等待确认：查询 {city || "该城市"} 的天气？
+                      </p>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
+                          onClick={() => {
+                            void addToolOutput({
+                              tool: "getWeatherInformation",
+                              toolCallId: part.toolCallId,
+                              output: fakeWeather(),
+                            });
+                          }}
+                        >
+                          批准
+                        </button>
+                        <button
+                          type="button"
+                          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs dark:border-zinc-600"
+                          onClick={() => {
+                            void addToolOutput({
+                              state: "output-error",
+                              tool: "getWeatherInformation",
+                              toolCallId: part.toolCallId,
+                              errorText: "User denied the weather request.",
+                            });
+                          }}
+                        >
+                          拒绝
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              }
+                  );
+                }
 
-              if (part.state === "output-available") {
+                if (part.state === "output-available") {
+                  return (
+                    <p
+                      key={part.toolCallId}
+                      className="mt-2 text-sm text-emerald-700 dark:text-emerald-300"
+                    >
+                      天气（{city}）：{String(part.output)}
+                    </p>
+                  );
+                }
+
+                if (part.state === "output-error") {
+                  return (
+                    <p
+                      key={part.toolCallId}
+                      className="mt-2 text-sm text-red-600"
+                    >
+                      已拒绝：{part.errorText}
+                    </p>
+                  );
+                }
+
                 return (
                   <p
                     key={part.toolCallId}
-                    className="mt-2 text-sm text-emerald-700 dark:text-emerald-300"
+                    className="mt-2 text-xs text-zinc-500"
                   >
-                    天气（{city}）：{String(part.output)}
+                    tool 状态：{part.state}
                   </p>
                 );
               }
 
-              if (part.state === "output-error") {
+              if (part.type === "tool-publishCopy") {
+                const title =
+                  part.input &&
+                  typeof part.input === "object" &&
+                  "title" in part.input
+                    ? String((part.input as { title?: string }).title ?? "")
+                    : "";
+                const content =
+                  part.input &&
+                  typeof part.input === "object" &&
+                  "content" in part.input
+                    ? String((part.input as { content?: string }).content ?? "")
+                    : "";
+
+                if (part.state === "input-available") {
+                  return (
+                    <div
+                      key={part.toolCallId}
+                      className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950"
+                    >
+                      <p className="mb-2 font-medium text-amber-900 dark:text-amber-100">
+                        等待确认：发布文案？
+                      </p>
+                      <p className="mb-1 text-xs">标题： {title || "无"}</p>
+                      <p className="mb-1 text-xs whitespace-pre-wrap">
+                        内容： {content || "无"}
+                      </p>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
+                          onClick={() => {
+                            void addToolOutput({
+                              tool: "publishCopy",
+                              toolCallId: part.toolCallId,
+                              output: fakePublishResult(title),
+                            });
+                          }}
+                        >
+                          批准
+                        </button>
+                        <button
+                          type="button"
+                          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs dark:border-zinc-600"
+                          onClick={() => {
+                            void addToolOutput({
+                              state: "output-error",
+                              tool: "publishCopy",
+                              toolCallId: part.toolCallId,
+                              errorText: "User denied the publish request.",
+                            });
+                          }}
+                        >
+                          拒绝
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (part.state === "output-available") {
+                  return (
+                    <p
+                      key={part.toolCallId}
+                      className="mt-2 text-sm text-emerald-700 dark:text-emerald-300"
+                    >
+                      {JSON.stringify(part.output, null, 2)}
+                    </p>
+                  );
+                }
+
+                if (part.state === "output-error") {
+                  return (
+                    <p
+                      key={part.toolCallId}
+                      className="mt-2 text-sm text-red-600"
+                    >
+                      {part.errorText}
+                    </p>
+                  );
+                }
+
                 return (
                   <p
                     key={part.toolCallId}
-                    className="mt-2 text-sm text-red-600"
+                    className="mt-2 text-xs text-zinc-500"
                   >
-                    已拒绝：{part.errorText}
+                    tool 状态：{part.state}
                   </p>
                 );
               }
-
-              return (
-                <p key={part.toolCallId} className="mt-2 text-xs text-zinc-500">
-                  tool 状态：{part.state}
-                </p>
-              );
             })}
           </div>
         ))}

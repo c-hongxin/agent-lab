@@ -9,6 +9,8 @@ import { z } from "zod";
 
 import { resolveModel } from "@/lib/ai/resolve-model";
 
+import { publishCopy } from "@/lib/tools/write-tools";
+
 export const maxDuration = 30;
 
 /**
@@ -33,10 +35,11 @@ export async function POST(req: Request) {
     model: resolveModel(),
     messages: await convertToModelMessages(messages),
     stopWhen: stepCountIs(5),
-    tools: { getWeatherInformation },
+    tools: { getWeatherInformation, publishCopy },
     system:
       "You are a helpful assistant for the HITL mini demo. " +
       "When the user asks about weather, call getWeatherInformation. " +
+      "When the user asks to publish a notification, call publishCopy with title and content. " +
       "If a tool execution is denied or fails because the user refused, " +
       "do not retry the same tool; tell the user the action was not performed.",
     abortSignal: req.signal,
