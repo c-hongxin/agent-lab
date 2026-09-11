@@ -7,6 +7,7 @@ import {
 } from "ai";
 import Link from "next/link";
 import { useState } from "react";
+import { NotificationPreviewCard } from "../chat/NotificationPreviewCard";
 
 const WEATHER_OPTIONS = ["sunny", "cloudy", "rainy", "snowy"] as const;
 
@@ -65,8 +66,9 @@ export function HitlMiniChat() {
         {messages.length === 0 ? (
           <p className="m-auto text-sm text-zinc-500">
             试试：「北京天气怎么样？」 /
-            「发布文案：标题是测试标题，内容是测试内容」 /
-            「试发邮件给 test@example.com，主题是问候，正文是你好」
+            「发布文案：标题是测试标题，内容是测试内容」 / 「试发邮件给
+            test@example.com，主题是问候，正文是你好」 / 「预览通知：触发类型是
+            bounty_awarded」
           </p>
         ) : null}
 
@@ -343,6 +345,41 @@ export function HitlMiniChat() {
                     >
                       {JSON.stringify(part.output, null, 2)}
                     </p>
+                  );
+                }
+
+                if (part.state === "output-error") {
+                  return (
+                    <p
+                      key={part.toolCallId}
+                      className="mt-2 text-sm text-red-600"
+                    >
+                      {part.errorText}
+                    </p>
+                  );
+                }
+
+                return (
+                  <p
+                    key={part.toolCallId}
+                    className="mt-2 text-xs text-zinc-500"
+                  >
+                    tool 状态：{part.state}
+                  </p>
+                );
+              }
+
+              if (part.type === "tool-previewNotification") {
+                if (part.state === "output-available" && part.output !== null) {
+                  const data = part.output as {
+                    trigger_type_code: string;
+                    title: string;
+                    content: string;
+                    cta_text: string;
+                    locale: string;
+                  };
+                  return (
+                    <NotificationPreviewCard key={part.toolCallId} {...data} />
                   );
                 }
 
