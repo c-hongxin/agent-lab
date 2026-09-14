@@ -38,12 +38,20 @@
 | A. Ant Design 自研 | `List` + `Card` + `Modal` 做 Thread；贴近运营后台 |
 | B. assistant-ui    | 用现成 Thread 组件，少写布局                      |
 
+**本仓库定稿（Demo B 收尾）**：**先不引入 AntD / assistant-ui**，继续用现有 Tailwind + 自研组件（`ApprovalCard` / `NotificationPreviewCard` / `MessageList`）。贴近方案 A 的「自研 Thread」，UI 库留给 Demo C 工作台再评估。
+
 **资料链接**
 
 - [Ant Design](https://ant.design/index-cn)
 - [assistant-ui](https://www.assistant-ui.com/docs/)
 
-建议：你熟悉 AntD → 选 A；想省时间 → 选 B。
+## Demo B 可选收尾（已做）
+
+- [√] 抽出 `components/chat/ApprovalCard.tsx`，`/hitl` 与主 Chat 共用
+- [√] 主 Chat（`/` + `/api/chat`）合并写操作 HITL + `previewNotification`
+- [√] `/hitl` 保留为独立 HITL 练习页
+
+建议：你熟悉 AntD → Demo C 再选 A；想省布局时间 → 选 B。
 
 ## Demo B 状态机（必须在文档里画清）
 

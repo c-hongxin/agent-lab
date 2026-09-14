@@ -7,32 +7,14 @@ import {
 } from "ai";
 import Link from "next/link";
 import { useState } from "react";
-import { NotificationPreviewCard } from "../chat/NotificationPreviewCard";
 
-const WEATHER_OPTIONS = ["sunny", "cloudy", "rainy", "snowy"] as const;
-
-function fakePublishResult(title: string) {
-  return {
-    ok: true,
-    id: `copy_${Date.now()}`,
-    title,
-    publishedAt: new Date().toISOString(),
-  };
-}
-
-function fakeSendTestEmailResult(to: string, subject: string) {
-  return {
-    ok: true,
-    messageId: `msg_${Date.now()}`,
-    to,
-    subject,
-    sentAt: new Date().toISOString(),
-  };
-}
-
-function fakeWeather() {
-  return WEATHER_OPTIONS[Math.floor(Math.random() * WEATHER_OPTIONS.length)];
-}
+import { ApprovalCard } from "@/components/chat/ApprovalCard";
+import { NotificationPreviewCard } from "@/components/chat/NotificationPreviewCard";
+import {
+  fakePublishResult,
+  fakeSendTestEmailResult,
+  fakeWeather,
+} from "@/lib/tools/hitl-outputs";
 
 export function HitlMiniChat() {
   const [input, setInput] = useState("");
@@ -81,14 +63,13 @@ export function HitlMiniChat() {
       <header className="mb-4 space-y-1">
         <p className="text-sm text-zinc-500">
           <Link href="/" className="text-blue-600 hover:underline">
-            ← Demo A
+            ← 主 Chat（Demo A + B）
           </Link>
         </p>
         <h1 className="text-xl font-semibold">HITL 最小示例</h1>
         <p className="text-sm text-zinc-500">
-          问天气会触发 <code className="text-xs">getWeatherInformation</code>
-          ；先批准/拒绝，才会补 tool result（AI SDK 5 等价于 cookbook 的
-          needsApproval）。
+          写操作走 <code className="text-xs">ApprovalCard</code>
+          ；预览走 Generative UI。主 Chat 已合并同类能力，本页仍可单独练 HITL。
         </p>
       </header>
 
@@ -136,43 +117,25 @@ export function HitlMiniChat() {
 
                 if (part.state === "input-available") {
                   return (
-                    <div
+                    <ApprovalCard
                       key={part.toolCallId}
-                      className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950"
-                    >
-                      <p className="mb-2 font-medium text-amber-900 dark:text-amber-100">
-                        等待确认：查询 {city || "该城市"} 的天气？
-                      </p>
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
-                          onClick={() => {
-                            void addToolOutput({
-                              tool: "getWeatherInformation",
-                              toolCallId: part.toolCallId,
-                              output: fakeWeather(),
-                            });
-                          }}
-                        >
-                          批准
-                        </button>
-                        <button
-                          type="button"
-                          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs dark:border-zinc-600"
-                          onClick={() => {
-                            void addToolOutput({
-                              state: "output-error",
-                              tool: "getWeatherInformation",
-                              toolCallId: part.toolCallId,
-                              errorText: "User denied the weather request.",
-                            });
-                          }}
-                        >
-                          拒绝
-                        </button>
-                      </div>
-                    </div>
+                      title={`等待确认：查询 ${city || "该城市"} 的天气？`}
+                      onApprove={() => {
+                        void addToolOutput({
+                          tool: "getWeatherInformation",
+                          toolCallId: part.toolCallId,
+                          output: fakeWeather(),
+                        });
+                      }}
+                      onDeny={() => {
+                        void addToolOutput({
+                          state: "output-error",
+                          tool: "getWeatherInformation",
+                          toolCallId: part.toolCallId,
+                          errorText: "User denied the weather request.",
+                        });
+                      }}
+                    />
                   );
                 }
 
@@ -224,47 +187,30 @@ export function HitlMiniChat() {
 
                 if (part.state === "input-available") {
                   return (
-                    <div
+                    <ApprovalCard
                       key={part.toolCallId}
-                      className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950"
+                      title="等待确认：发布文案？"
+                      onApprove={() => {
+                        void addToolOutput({
+                          tool: "publishCopy",
+                          toolCallId: part.toolCallId,
+                          output: fakePublishResult(title),
+                        });
+                      }}
+                      onDeny={() => {
+                        void addToolOutput({
+                          state: "output-error",
+                          tool: "publishCopy",
+                          toolCallId: part.toolCallId,
+                          errorText: "User denied the publish request.",
+                        });
+                      }}
                     >
-                      <p className="mb-2 font-medium text-amber-900 dark:text-amber-100">
-                        等待确认：发布文案？
+                      <p>标题：{title || "无"}</p>
+                      <p className="whitespace-pre-wrap">
+                        内容：{content || "无"}
                       </p>
-                      <p className="mb-1 text-xs">标题： {title || "无"}</p>
-                      <p className="mb-1 text-xs whitespace-pre-wrap">
-                        内容： {content || "无"}
-                      </p>
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
-                          onClick={() => {
-                            void addToolOutput({
-                              tool: "publishCopy",
-                              toolCallId: part.toolCallId,
-                              output: fakePublishResult(title),
-                            });
-                          }}
-                        >
-                          批准
-                        </button>
-                        <button
-                          type="button"
-                          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs dark:border-zinc-600"
-                          onClick={() => {
-                            void addToolOutput({
-                              state: "output-error",
-                              tool: "publishCopy",
-                              toolCallId: part.toolCallId,
-                              errorText: "User denied the publish request.",
-                            });
-                          }}
-                        >
-                          拒绝
-                        </button>
-                      </div>
-                    </div>
+                    </ApprovalCard>
                   );
                 }
 
@@ -322,48 +268,29 @@ export function HitlMiniChat() {
 
                 if (part.state === "input-available") {
                   return (
-                    <div
+                    <ApprovalCard
                       key={part.toolCallId}
-                      className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950"
+                      title="等待确认：试发邮件？"
+                      onApprove={() => {
+                        void addToolOutput({
+                          tool: "sendTestEmail",
+                          toolCallId: part.toolCallId,
+                          output: fakeSendTestEmailResult(to, subject),
+                        });
+                      }}
+                      onDeny={() => {
+                        void addToolOutput({
+                          state: "output-error",
+                          tool: "sendTestEmail",
+                          toolCallId: part.toolCallId,
+                          errorText: "User denied sending the test email.",
+                        });
+                      }}
                     >
-                      <p className="mb-2 font-medium text-amber-900 dark:text-amber-100">
-                        等待确认：试发邮件？
-                      </p>
-                      <p className="mb-1 text-xs">收件人：{to || "无"}</p>
-                      <p className="mb-1 text-xs">主题：{subject || "无"}</p>
-                      <p className="mb-2 text-xs whitespace-pre-wrap">
-                        正文：{body || "无"}
-                      </p>
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
-                          onClick={() => {
-                            void addToolOutput({
-                              tool: "sendTestEmail",
-                              toolCallId: part.toolCallId,
-                              output: fakeSendTestEmailResult(to, subject),
-                            });
-                          }}
-                        >
-                          批准
-                        </button>
-                        <button
-                          type="button"
-                          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs dark:border-zinc-600"
-                          onClick={() => {
-                            void addToolOutput({
-                              state: "output-error",
-                              tool: "sendTestEmail",
-                              toolCallId: part.toolCallId,
-                              errorText: "User denied sending the test email.",
-                            });
-                          }}
-                        >
-                          拒绝
-                        </button>
-                      </div>
-                    </div>
+                      <p>收件人：{to || "无"}</p>
+                      <p>主题：{subject || "无"}</p>
+                      <p className="whitespace-pre-wrap">正文：{body || "无"}</p>
+                    </ApprovalCard>
                   );
                 }
 

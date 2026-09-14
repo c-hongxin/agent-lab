@@ -10,7 +10,7 @@
 | ---- | --------------- | --------------------------------------------------- |
 | 0    | 笔记已建        | `notes/phase-0-concepts.md`                         |
 | 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard |
-| 2    | Demo B 进行中   | HITL 最小示例：[`/hitl`](http://localhost:3000/hitl) |
+| 2    | **Demo B 完成** | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
 | 3～4 | 占位            | Demo C、`fixtures/`、`evals/`                       |
 
 ## 如何启动
@@ -41,15 +41,17 @@ Key 只在服务端 Route Handler 使用；浏览器 Network 里不应出现 API
 - 「我屏幕多宽？」→ 客户端 `getViewportSize` + 宽高
 - 长回复时点「停止」→ 流中断，并显示已停止提示
 
-### Demo B · HITL 最小示例
+### Demo B · HITL / 预览（主 Chat 已合并）
 
-打开 <http://localhost:3000/hitl>，问「北京天气怎么样？」：
+在首页 <http://localhost:3000> 也可直接试：
 
-1. 出现 **批准 / 拒绝**（此时尚未产生天气结果）
-2. 批准 → 补上 tool result，模型继续回复
-3. 拒绝 → tool 失败态，模型应说明未执行（勿自动重试）
+- 「发布文案：标题是测试，内容是你好」→ `ApprovalCard` 批准/拒绝
+- 「预览通知：触发类型是 bounty_awarded」→ `NotificationPreviewCard`
+- 请求失败时 →「编辑」/「重新生成」
 
-说明：当前为 AI SDK 5，官方 cookbook 的 `needsApproval` 属 6+；本示例用「tool 无 `execute` + 前端确认后再 `addToolOutput`」做等价 HITL。
+独立练习页仍可用：<http://localhost:3000/hitl>
+
+说明：当前为 AI SDK 5，官方 cookbook 的 `needsApproval` 属 6+；本示例用「tool 无 `execute` + 前端确认后再 `addToolOutput`」做等价 HITL。UI 暂定 Tailwind 自研，不引入 AntD / assistant-ui。
 
 ### 会话是否持久化
 

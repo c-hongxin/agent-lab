@@ -104,7 +104,9 @@ tool_pending
 | `src/app/api/hitl/route.ts`                       | 注册 tools；写操作无 `execute`，读操作有 |
 | `src/lib/tools/write-tools.ts`                    | `publishCopy` / `sendTestEmail`          |
 | `src/lib/tools/preview-tools.ts`                  | `previewNotification`                    |
-| `src/components/hitl/HitlMiniChat.tsx`            | 确认 UI、预览卡、Retry                   |
+| `src/components/chat/ApprovalCard.tsx`            | HITL 确认卡（主 Chat + `/hitl`）         |
+| `src/components/hitl/HitlMiniChat.tsx`            | HITL 独立练习页                          |
 | `src/components/chat/NotificationPreviewCard.tsx` | Generative UI 预览                       |
+| `src/components/chat/ChatPage.tsx`                | 主 Chat（已合并 Demo B 能力）            |
 
-后续若抽出正式 `ApprovalCard.tsx` 并入主 Chat，本状态机仍然适用，只是确认 UI 换组件。
+后续若换成 Ant Design Thread，本状态机仍然适用，只是确认 UI / 列表组件换皮。
