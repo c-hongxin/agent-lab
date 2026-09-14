@@ -6,29 +6,75 @@
 
 ## 当前进度
 
-| 阶段 | 状态            | 说明                                         |
-| ---- | --------------- | -------------------------------------------- |
-| 0    | 笔记已建        | `notes/phase-0-concepts.md` 待填写           |
-| 1    | **Demo A 骨架** | 流式 Chat + `getWeather` + `getViewportSize` |
-| 2～4 | 占位            | `docs/`、`fixtures/`、`evals/`               |
+| 阶段 | 状态            | 说明                                                |
+| ---- | --------------- | --------------------------------------------------- |
+| 0    | 笔记已建        | `notes/phase-0-concepts.md`                         |
+| 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard |
+| 2    | **Demo B 完成** | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
+| 3～4 | 占位            | Demo C、`fixtures/`、`evals/`                       |
 
-## 快速开始
+## 如何启动
 
 ```powershell
 cd C:\Users\HP\Desktop\agent-lab
 copy .env.example .env.local
 # 编辑 .env.local，填入 DEEPSEEK_API_KEY（https://platform.deepseek.com）
 
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-浏览器打开 <http://localhost:3000>
+浏览器打开 <http://localhost:3000>。
+
+环境变量（见 `.env.example`）：
+
+| 变量               | 说明                              |
+| ------------------ | --------------------------------- |
+| `DEEPSEEK_API_KEY` | 必填；只放在 `.env.local`，勿提交 |
+| `DEEPSEEK_MODEL`   | 可选，默认 `deepseek-v4-flash`    |
+
+Key 只在服务端 Route Handler 使用；浏览器 Network 里不应出现 API Key。
 
 ### 试两句
 
-- 「北京天气怎么样？」→ 应触发服务端 `getWeather`
-- 「我屏幕多宽？」→ 应触发客户端 `getViewportSize`
+- 「北京天气怎么样？」→ 服务端 `getWeather` + tool 卡片
+- 「我屏幕多宽？」→ 客户端 `getViewportSize` + 宽高
+- 长回复时点「停止」→ 流中断，并显示已停止提示
+
+### Demo B · HITL / 预览（主 Chat 已合并）
+
+在首页 <http://localhost:3000> 也可直接试：
+
+- 「发布文案：标题是测试，内容是你好」→ `ApprovalCard` 批准/拒绝
+- 「预览通知：触发类型是 bounty_awarded」→ `NotificationPreviewCard`
+- 请求失败时 →「编辑」/「重新生成」
+
+独立练习页仍可用：<http://localhost:3000/hitl>
+
+说明：当前为 AI SDK 5，官方 cookbook 的 `needsApproval` 属 6+；本示例用「tool 无 `execute` + 前端确认后再 `addToolOutput`」做等价 HITL。UI 暂定 Tailwind 自研，不引入 AntD / assistant-ui。
+
+### 会话是否持久化
+
+**本阶段不持久化。** 刷新页面后聊天记录清空（仅活在前端 `useChat` 内存里）。若以后要落库 / localStorage，再单独做。
+
+## 与普通 Chat 的差异
+
+普通「一问一答」聊天往往只渲染一段纯文本。Demo A 不同在：
+
+1. **`parts` 渲染**：同一条 assistant 消息可含文本 part + 多个 tool part，按顺序展示，而不是只读 `content` 字符串。
+2. **Tool 有状态**：如 `input-streaming` → `input-available` → `output-available` / `output-error`，UI（`ToolCallCard`）跟着变。
+3. **多轮 tool loop**：模型决定调 tool → 服务端 `execute` 或浏览器 `onToolCall` + `addToolOutput` → 结果回灌后再继续生成（可多步，`stopWhen` 限制步数）。
+4. **Stop**：流式过程中可 `stop()`，服务端用 `abortSignal` 中止生成。
+
+## 与 B 端列表页的差异
+
+| B 端典型列表页                                  | Demo A Chat                                           |
+| ----------------------------------------------- | ----------------------------------------------------- |
+| 一次 `request` 拿全量 `data.list`，表格一次画完 | UI 由 **消息流** 驱动：SSE/ 流式 chunk 陆续到达再更新 |
+| 行数据静态、交互是筛选 / 分页                   | 交互是发送、Stop, tool 状态变化                       |
+| 取消请求 ≈ 关掉 loading                         | Stop 后消息可能半截保留，并有明确「已停止」态         |
+
+一句话：列表页是「请求 → 整包数据 → 渲染」；Chat 是「持续推送的消息 / part 状态机 → 渲染」。
 
 ## 目录结构
 
@@ -38,23 +84,16 @@ agent-lab/
   notes/                 # 阶段笔记
   docs/
     learning/            # Demo A / B / C 与阶段 0、4
-    architecture.md      # 架构 / 状态机 / MCP 等
+    architecture.md
     product.md
   fixtures/              # 自造 trigger（Demo C）
   evals/                 # 评测（阶段 4）
   packages/              # 后续 agent-ui、copy-schema
   src/
-    app/api/chat/        # Route Handler
-    components/chat/     # Demo A UI
+    app/api/chat/        # Route Handler（streamText + tools）
+    components/chat/     # ChatPage / MessageList / ToolCallCard …
     lib/tools/           # 服务端 / 客户端 tool
 ```
-
-## Demo A 与普通 Chat / B 端列表的差异
-
-1. **消息用 `parts` 渲染**：同一条 assistant 消息可含文本 + 多个 tool part，顺序保留。
-2. **Tool 有状态机**：`input-streaming` → `output-available` 等，不是一次 REST 返回。
-3. **客户端 tool**：部分 tool 在浏览器 `onToolCall` 执行，必须 `addToolOutput` 回传。
-4. **Stop**：流式过程中可 `stop()`，与表格页「请求取消」类似但 UI 状态更细。
 
 ## 合规
 
@@ -64,5 +103,6 @@ agent-lab/
 
 ## 参考
 
+- [Demo A 学习清单](./docs/learning/02-demo-a.md)
 - [AI SDK 中文](https://ai-sdk.com.cn/)
 - [Chatbot Tool Usage](https://ai-sdk.com.cn/docs/ai-sdk-ui/chatbot-tool-usage)

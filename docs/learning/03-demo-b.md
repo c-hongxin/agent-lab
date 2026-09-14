@@ -18,15 +18,18 @@
 
 ## 要做什么（按顺序）
 
-- [ ] **Fork 或分支**：从 Demo A 拉出 `demo-b` 分支（仍在练习仓库）
-- [ ] 跑通官方 HITL 最小示例（可单独路由，再合并进主 Chat）
-- [ ] 新增 **写操作 tool**（二选一或都要）：
+- [√] **Fork 或分支**：从 Demo A 拉出 `demo-b` 分支（仍在练习仓库）
+- [√] 跑通官方 HITL 最小示例（可单独路由，再合并进主 Chat）  
+  → 打开 [`/hitl`](../../src/app/hitl/page.tsx)：AI SDK 5 无 `needsApproval`，用「无 execute + 批准 / 拒绝后再 `addToolOutput`」等价实现；API：`/api/hitl`
+- [√] 新增 **写操作 tool**（二选一或都要）：
   - `publishCopy`：模拟「发布文案」
   - `sendTestEmail`：模拟「试发邮件」
-- [ ] 上述 tool 必须 **`requireApproval`** 或等价 HITL 流程：UI 出确认卡 → 用户点批准 / 拒绝 → 再产生 tool-result
-- [ ] 新增 **Generative UI**：`previewNotification` 返回结构化数据，前端渲染 **通知预览卡**（标题、正文、CTA 按钮文案——全部用假数据）
-- [ ] 实现 **Retry**：失败后允许用户编辑上一条消息或点重试
-- [ ] 写 `docs/demo-b-state-machine.md`：状态枚举 + 转移表
+- [√] 上述 tool 必须 **`requireApproval`** 或等价 HITL 流程：UI 出确认卡 → 用户点批准 / 拒绝 → 再产生 tool-result  
+  → 已在 `/hitl` 用「无 execute + 批准 / 拒绝后再 `addToolOutput`」跑通 `publishCopy` / `sendTestEmail`
+- [√] 新增 **Generative UI**：`previewNotification` 返回结构化数据，前端渲染 **通知预览卡**（标题、正文、CTA 按钮文案——全部用假数据）
+- [√] 实现 **Retry**：失败后允许用户编辑上一条消息或点重试
+- [√] 写 `docs/demo-b-state-machine.md`：状态枚举 + 转移表
+  → 见 [`docs/demo-b-state-machine.md`](../demo-b-state-machine.md)
 
 ## UI 方案（二选一，Week 3 前定稿）
 
@@ -35,12 +38,20 @@
 | A. Ant Design 自研 | `List` + `Card` + `Modal` 做 Thread；贴近运营后台 |
 | B. assistant-ui    | 用现成 Thread 组件，少写布局                      |
 
+**本仓库定稿（Demo B 收尾）**：**先不引入 AntD / assistant-ui**，继续用现有 Tailwind + 自研组件（`ApprovalCard` / `NotificationPreviewCard` / `MessageList`）。贴近方案 A 的「自研 Thread」，UI 库留给 Demo C 工作台再评估。
+
 **资料链接**
 
 - [Ant Design](https://ant.design/index-cn)
 - [assistant-ui](https://www.assistant-ui.com/docs/)
 
-建议：你熟悉 AntD → 选 A；想省时间 → 选 B。
+## Demo B 可选收尾（已做）
+
+- [√] 抽出 `components/chat/ApprovalCard.tsx`，`/hitl` 与主 Chat 共用
+- [√] 主 Chat（`/` + `/api/chat`）合并写操作 HITL + `previewNotification`
+- [√] `/hitl` 保留为独立 HITL 练习页
+
+建议：你熟悉 AntD → Demo C 再选 A；想省布局时间 → 选 B。
 
 ## Demo B 状态机（必须在文档里画清）
 
@@ -81,9 +92,10 @@ idle
 
 ## 验收标准
 
-- [ ] 触发 `publishCopy` 或 `sendTestEmail` 时 **不会** 未经确认直接 success
-- [ ] 点「拒绝」后模型收到失败 result，能继续对话
-- [ ] `previewNotification` 在聊天流里渲染出卡片，不是纯 Markdown
-- [ ] 能对照状态机文档说出当前 UI 处于哪一态
+- [√] 触发 `publishCopy` 或 `sendTestEmail` 时 **不会** 未经确认直接 success
+- [√] 点「拒绝」后模型收到失败 result，能继续对话
+- [√] `previewNotification` 在聊天流里渲染出卡片，不是纯 Markdown
+- [√] 能对照状态机文档说出当前 UI 处于哪一态
+  → 对照 [`docs/demo-b-state-machine.md`](../demo-b-state-machine.md) §5
 
 下一份：[Demo C](./04-demo-c.md) · 返回 [学习方案首页](../../工程师学习.md)
