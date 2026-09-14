@@ -28,7 +28,8 @@
   → 已在 `/hitl` 用「无 execute + 批准 / 拒绝后再 `addToolOutput`」跑通 `publishCopy` / `sendTestEmail`
 - [√] 新增 **Generative UI**：`previewNotification` 返回结构化数据，前端渲染 **通知预览卡**（标题、正文、CTA 按钮文案——全部用假数据）
 - [√] 实现 **Retry**：失败后允许用户编辑上一条消息或点重试
-- [ ] 写 `docs/demo-b-state-machine.md`：状态枚举 + 转移表
+- [√] 写 `docs/demo-b-state-machine.md`：状态枚举 + 转移表
+  → 见 [`docs/demo-b-state-machine.md`](../demo-b-state-machine.md)
 
 ## UI 方案（二选一，Week 3 前定稿）
 
@@ -83,9 +84,10 @@ idle
 
 ## 验收标准
 
-- [ ] 触发 `publishCopy` 或 `sendTestEmail` 时 **不会** 未经确认直接 success
-- [ ] 点「拒绝」后模型收到失败 result，能继续对话
-- [ ] `previewNotification` 在聊天流里渲染出卡片，不是纯 Markdown
-- [ ] 能对照状态机文档说出当前 UI 处于哪一态
+- [√] 触发 `publishCopy` 或 `sendTestEmail` 时 **不会** 未经确认直接 success
+- [√] 点「拒绝」后模型收到失败 result，能继续对话
+- [√] `previewNotification` 在聊天流里渲染出卡片，不是纯 Markdown
+- [√] 能对照状态机文档说出当前 UI 处于哪一态
+  → 对照 [`docs/demo-b-state-machine.md`](../demo-b-state-machine.md) §5
 
 下一份：[Demo C](./04-demo-c.md) · 返回 [学习方案首页](../../工程师学习.md)
