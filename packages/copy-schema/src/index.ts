@@ -13,8 +13,8 @@ export const bountyReviewApprovedFields = z.object({
 });
 
 export const announcementPublishedFields = z.object({
-  announcement_name: z.string().min(1, "announcement_name 必填"),
-  announcement_content: z.string().min(1, "announcement_content 必填"),
+  announcement_title: z.string().min(1, "announcement_title 必填"),
+  announcement_summary: z.string().min(1, "announcement_summary 必填"),
 });
 
 export const copyFieldSchemas = {

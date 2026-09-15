@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/copy-schema": ["./packages/copy-schema/src/index.ts"]
     }
   },
   "include": [
