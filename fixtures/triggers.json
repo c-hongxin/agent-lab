@@ -13,10 +13,64 @@
       "required_fields": ["design_name", "target_count"]
     },
     {
+      "code": "bounty_awarded",
+      "description": "赏金到账提醒（假数据）",
+      "category": "work",
+      "required_fields": ["design_name", "amount"]
+    },
+    {
+      "code": "work_submitted",
+      "description": "作品已提交待审（假数据）",
+      "category": "work",
+      "required_fields": ["design_name", "submit_time"]
+    },
+    {
+      "code": "work_revision_requested",
+      "description": "作品需修改后重提（假数据）",
+      "category": "work",
+      "required_fields": ["design_name", "revision_note"]
+    },
+    {
       "code": "announcement_published",
       "description": "官方公告发布（假数据）",
       "category": "system",
       "required_fields": ["announcement_title", "announcement_summary"]
+    },
+    {
+      "code": "system_maintenance",
+      "description": "系统维护通知（假数据）",
+      "category": "system",
+      "required_fields": ["window_start", "window_end"]
+    },
+    {
+      "code": "account_security_alert",
+      "description": "账号安全提醒（假数据）",
+      "category": "system",
+      "required_fields": ["alert_type", "occurred_at"]
+    },
+    {
+      "code": "activity_invite",
+      "description": "活动邀请（假数据）",
+      "category": "growth",
+      "required_fields": ["activity_name", "cta_url"]
+    },
+    {
+      "code": "activity_reward_granted",
+      "description": "活动奖励发放（假数据）",
+      "category": "growth",
+      "required_fields": ["activity_name", "reward_name"]
+    },
+    {
+      "code": "comment_replied",
+      "description": "评论被回复（假数据）",
+      "category": "social",
+      "required_fields": ["post_title", "replier_name"]
+    },
+    {
+      "code": "follow_new",
+      "description": "新增关注（假数据）",
+      "category": "social",
+      "required_fields": ["follower_name"]
     }
   ]
 }

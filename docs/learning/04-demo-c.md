@@ -85,9 +85,11 @@ agent-lab/
 
 | 周    | 任务概要                      | 勾选 |
 | ----- | ----------------------------- | ---- |
-| W3    | 需求 + fixtures + copy-schema | [ ]  |
+| W3    | 需求 + fixtures + copy-schema | [√]  |
 | W4    | 5 个 tool + 主路径 + HITL     | [ ]  |
 | W4 末 | architecture 初稿             | [ ]  |
+
+> 当前分支：`demo-c`（从 `demo-b` 拉出）。W3 第 1 步：`fixtures/triggers.json` 已扩到 12 条假 trigger。
 
 **每周要点**
 
@@ -132,6 +134,6 @@ Fixtures（自造 trigger 与假文案；禁止公司私有文案与密钥）
 
 ## README 说明模板
 
-> 基于 AI SDK 实现通知文案 Agent 工作台：流式对话、Tool Calling、HITL 与 Generative 预览；Zod schema + eval；覆盖「查类型 → 填参数 → 生成文案 → 预览 → 导出」链路。数据均为自造 fixture，Inspired by notification workflows.
+> 基于 AI SDK 实现通知文案 Agent 工作台：流式对话、Tool Calling, HITL 与 Generative 预览；Zod schema + eval；覆盖「查类型 → 填参数 → 生成文案 → 预览 → 导出」链路。数据均为自造 fixture，Inspired by notification workflows.
 
 下一份：[阶段 4](./05-phase-4.md) · 返回 [学习方案首页](../../工程师学习.md)

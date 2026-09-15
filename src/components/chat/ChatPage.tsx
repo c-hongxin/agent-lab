@@ -86,6 +86,11 @@ export function ChatPage() {
             HITL 独立练习页 →
           </Link>
         </p>
+        <p className="mt-1 text-sm">
+          <Link href="/workbench" className="text-blue-600 hover:underline">
+            Demo C · 工作台 →
+          </Link>
+        </p>
       </header>
 
       <MessageList
