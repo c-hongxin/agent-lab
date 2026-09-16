@@ -67,3 +67,62 @@ export const getCopySchema = tool({
     };
   },
 });
+
+export const validateFields = tool({
+  description:
+    "Validate notification field values against the Zod schema for a trigger_type_code" +
+    "Use after the user provides design_name / rejection_reason / etc., " +
+    "or before generating copy.",
+  inputSchema: z.object({
+    trigger_type_code: z
+      .string()
+      .describe(
+        "Trigger code, e.g. bounty_review_rejected / bounty_review_approved / announcement_published",
+      ),
+    fields: z
+      .record(z.string(), z.unknown())
+      .describe("Field values → value map extracted from the user message"),
+  }),
+  execute: async ({ trigger_type_code, fields }) => {
+    const schema = getCopyFieldSchema(trigger_type_code as TriggerTypeCode);
+    if (!schema) {
+      return {
+        ok: false as const,
+        trigger_type_code,
+        missing: [] as string[],
+        errors: [
+          `Unknown or unsupported trigger_type_code: ${trigger_type_code}`,
+        ],
+      };
+    }
+
+    const parsed = schema.safeParse(fields);
+    if (parsed.success) {
+      return {
+        ok: true as const,
+        trigger_type_code,
+        missing: [] as string[],
+        errors: [] as string[],
+        values: parsed.data,
+      };
+    }
+
+    const missing: string[] = [];
+    const errors: string[] = [];
+    for (const issue of parsed.error.issues) {
+      const key = issue.path.join(".") || "(root)";
+      if (issue.code === "invalid_type" && issue.received === "undefined") {
+        missing.push(key);
+      } else {
+        errors.push(`${key}: ${issue.message}`);
+      }
+    }
+
+    return {
+      ok: false as const,
+      trigger_type_code,
+      missing,
+      errors,
+    };
+  },
+});
