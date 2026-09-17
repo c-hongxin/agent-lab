@@ -4,6 +4,7 @@ import {
   getCopySchema,
   validateFields,
 } from "@/lib/tools/workbench-tools";
+import { previewNotification } from "@/lib/tools/preview-tools";
 import { stepCountIs, convertToModelMessages, streamText, UIMessage } from "ai";
 
 export const maxDuration = 30;
@@ -14,11 +15,12 @@ export async function POST(req: Request) {
   const result = streamText({
     model: resolveModel(),
     messages: await convertToModelMessages(messages),
-    stopWhen: stepCountIs(5),
+    stopWhen: stepCountIs(8),
     tools: {
       listTriggerTypes,
       getCopySchema,
       validateFields,
+      previewNotification,
     },
     system:
       "You are the notification copy workbench assistant (Demo C)." +
@@ -26,6 +28,7 @@ export async function POST(req: Request) {
       "or asks to list categories like/system, call listTriggerTypes. " +
       "When the user asks which fields a trigger needs, call getCopySchema. " +
       "When the user provides field values for a notification, call validateFields. " +
+      "After validateFields ok:true, draft zh-CN title and body, then call previewNotification. " +
       "Answer in Chinese. Data comes from demo fixtures only.",
     abortSignal: req.signal,
   });

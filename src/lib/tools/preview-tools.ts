@@ -7,22 +7,26 @@ Demo B Generative UI：返回通知预览用的结构化假数据
  */
 export const previewNotification = tool({
   description:
-    "Preview notification data for Generative UI (demo only). " +
-    "Use when the user asks to preview a notification.",
+    "Preview a notification card after copy is ready. " +
+    "Use when validation passed and draft title/content exist, " +
+    "or when the user asks to preview / 预览",
   inputSchema: z.object({
-    trigger_type_code: z
+    trigger_type_code: z.string().describe(" e.g. bounty_review_rejected"),
+    title: z.string().describe("Notification title (zh-CN preferred)"),
+    content: z.string().describe("Notification content"),
+    cta_text: z
       .string()
-      .describe(
-        "The trigger type code of the notification, e.g. bounty_awarded",
-      ),
+      .optional()
+      .describe("CTA button label; default 查看详情"),
+    locale: z.string().optional().describe("e.g. zh-CN / en-US; default zh-CN"),
   }),
-  execute: async ({ trigger_type_code }) => {
+  execute: async ({ trigger_type_code, title, content, cta_text, locale }) => {
     return {
       trigger_type_code,
-      title: "通知标题",
-      content: "通知内容",
-      cta_text: "查看详情",
-      locale: "zh-CN",
+      title,
+      content,
+      cta_text: cta_text || "查看详情",
+      locale: locale || "zh-CN",
     };
   },
 });
