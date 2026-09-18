@@ -7,11 +7,13 @@ import { MessageItem } from "./MessageItem";
 export function MessageList({
   messages,
   stopped,
+  emptyHint = "试试：「北京天气怎么样？」/「我屏幕多宽？」/「发布文案…」/「预览通知…」",
   onApproveWriteTool,
   onDenyWriteTool,
 }: {
   messages: UIMessage[];
   stopped: boolean;
+  emptyHint?: string;
   onApproveWriteTool?: (args: {
     toolName: "publishCopy" | "sendTestEmail";
     toolCallId: string;
@@ -24,8 +26,8 @@ export function MessageList({
 }) {
   if (messages.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center text-sm text-zinc-500">
-        试试：「北京天气怎么样？」/「我屏幕多宽？」/「发布文案…」/「预览通知…」
+      <div className="flex flex-1 items-center justify-center px-6 text-center text-sm text-zinc-500">
+        {emptyHint}
       </div>
     );
   }
