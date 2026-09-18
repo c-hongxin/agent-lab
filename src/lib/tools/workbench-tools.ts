@@ -71,7 +71,7 @@ export const getCopySchema = tool({
 export const validateFields = tool({
   description:
     "Validate notification field values against the Zod schema for a trigger_type_code" +
-    "Use after the user provides design_name / rejection_reason / etc., " +
+    "Use after the user provides design_name / reject_reason / etc., " +
     "or before generating copy.",
   inputSchema: z.object({
     trigger_type_code: z
@@ -123,6 +123,45 @@ export const validateFields = tool({
       trigger_type_code,
       missing,
       errors,
+    };
+  },
+});
+
+export const exportLocaleSnippet = tool({
+  description:
+    "Export a paste-ready locale snippet for notification copy" +
+    "Use after preview, or when the user asks to export / 导出 locale / snippet.",
+  inputSchema: z.object({
+    trigger_type_code: z
+      .string()
+      .describe(
+        "Trigger code, e.g. bounty_review_rejected / bounty_review_approved / announcement_published",
+      ),
+    locale: z.enum(["zh-CN", "en-US"]).describe("Target locale"),
+    title: z.string().describe("Notification title in that locale"),
+    content: z.string().describe("Notification content in that locale"),
+    cta_text: z
+      .string()
+      .optional()
+      .describe("CTA label; default depends on locale"),
+  }),
+  execute: async ({ trigger_type_code, locale, title, content, cta_text }) => {
+    const cta = cta_text || (locale === "zh-CN" ? "查看详情" : "View details");
+    const keyBase = trigger_type_code.replace(/_/g, ".");
+    // JSON.stringify → 合法 JS/TS 双引号字面量（含内部 " 转义）
+    const q = (s: string) => JSON.stringify(s);
+    const snippet = [
+      `// ${locale} · ${trigger_type_code}`,
+      `"${keyBase}.title": ${q(title)},`,
+      `"${keyBase}.content": ${q(content)},`,
+      `"${keyBase}.cta": ${q(cta)},`,
+    ].join("\n");
+
+    return {
+      ok: true as const,
+      trigger_type_code,
+      locale,
+      snippet,
     };
   },
 });
