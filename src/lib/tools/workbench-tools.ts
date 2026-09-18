@@ -9,7 +9,7 @@ import {
   type TriggerTypeCode,
 } from "@/copy-schema";
 
-// Demo C：列出自造 trigger 类型
+// 列出 fixtures 里的通知类型。可选 category 过滤（work / system / growth / social）。
 export const listTriggerTypes = tool({
   description:
     "List available notification trigger types from demo fixtures." +
@@ -34,6 +34,7 @@ export const listTriggerTypes = tool({
   },
 });
 
+// 按 trigger_type_code 查 copy-schema，返回该类型要填的字段名。只覆盖已建 Zod 的 3 个 code。
 export const getCopySchema = tool({
   description:
     "Get required copy fields for a trigger_type_code" +
@@ -68,6 +69,7 @@ export const getCopySchema = tool({
   },
 });
 
+// 用对应 Zod schema 校验模型从用户话里抽出的字段。缺字段进 missing，格式不对进 errors。
 export const validateFields = tool({
   description:
     "Validate notification field values against the Zod schema for a trigger_type_code" +
@@ -127,6 +129,7 @@ export const validateFields = tool({
   },
 });
 
+// 把标题/正文打成可粘贴的 locale 片段。JSON.stringify 负责转义内容里的引号。
 export const exportLocaleSnippet = tool({
   description:
     "Export a paste-ready locale snippet for notification copy" +

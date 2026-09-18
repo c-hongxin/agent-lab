@@ -1,10 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 
-/*
-Demo B Generative UI：返回通知预览用的结构化假数据
-有 execute → 读操作，不需要人确认，直到出结果给前端画卡片 
- */
+// 返回预览卡数据。有 execute，前端拿到结果后画 NotificationPreviewCard，不需要人确认。
 export const previewNotification = tool({
   description:
     "Preview a notification card after copy is ready. " +

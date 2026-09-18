@@ -1,6 +1,6 @@
 const WEATHER_OPTIONS = ["sunny", "cloudy", "rainy", "snowy"] as const;
 
-/** HITL 批准后的假成功结果（不落库、不真发信） */
+// 确认发布后写入的假结果，不落库。
 export function fakePublishResult(title: string) {
   return {
     ok: true,
@@ -10,6 +10,7 @@ export function fakePublishResult(title: string) {
   };
 }
 
+// 确认试发后写入的假回执，不真发信。
 export function fakeSendTestEmailResult(to: string, subject: string) {
   return {
     ok: true,
@@ -20,6 +21,7 @@ export function fakeSendTestEmailResult(to: string, subject: string) {
   };
 }
 
+// HITL 练习页里 getWeather 被用户确认后返回的假天气。
 export function fakeWeather() {
   return WEATHER_OPTIONS[Math.floor(Math.random() * WEATHER_OPTIONS.length)];
 }

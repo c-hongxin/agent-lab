@@ -1,8 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 
-/* Demo B 写操作：模拟“发布文案”
-故意不写 execute → 必须等人确认后，前端再 addToolOutput */
+// 模拟发布文案。不写 execute，等人在确认卡点同意后，前端再 addToolOutput。
 export const publishCopy = tool({
   description:
     "Publish notification copy (demo only, no real publish). " +
@@ -13,7 +12,7 @@ export const publishCopy = tool({
   }),
 });
 
-/* Demo B 写操作：模拟“试发邮件”（不真发信） */
+// 模拟试发邮件，不真发信。同样没有 execute，走同一套确认卡。
 export const sendTestEmail = tool({
   description:
     "Send a test email (demo only, no real email). " +

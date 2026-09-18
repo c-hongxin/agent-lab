@@ -86,8 +86,8 @@ agent-lab/
 | 周    | 任务概要                      | 勾选 |
 | ----- | ----------------------------- | ---- |
 | W3    | 需求 + fixtures + copy-schema | [√]  |
-| W4    | 5 个 tool + 主路径 + HITL     | [ ]  |
-| W4 末 | architecture 初稿             | [ ]  |
+| W4    | 5 个 tool + 主路径 + HITL     | [√]  |
+| W4 末 | architecture 初稿             | [√]  |
 
 > 当前分支：`demo-c`（从 `demo-b` 拉出）。W3 第 1 步：`fixtures/triggers.json` 已扩到 12 条假 trigger。
 
