@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "tc-01",
+    "category": "tool_choice",
+    "input": "有哪些通知类型？",
+    "expect": { "tools_include": ["listTriggerTypes"] }
+  },
+  {
+    "id": "tc-02",
+    "category": "tool_choice",
+    "input": "赏金驳回通知要填哪些字段？",
+    "expect": {
+      "tools_include": ["getCopySchema"],
+      "trigger_type_code": "bounty_review_rejected"
+    }
+  },
+  {
+    "id": "tc-03",
+    "category": "tool_choice",
+    "input": "帮我写赏金驳回通知，设计名称是桌面收纳盒，原因是刀路不清晰，请重新设计",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "bounty_review_rejected",
+      "validate_ok": true
+    }
+  },
+  {
+    "id": "tc-04",
+    "category": "tool_choice",
+    "input": "帮我写赏金通过通知，设计名是桌面收纳盒，目标数量是 3",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "bounty_review_approved",
+      "validate_ok": true
+    }
+  },
+  {
+    "id": "tc-05",
+    "category": "tool_choice",
+    "input": "帮我写官方公告通知，标题是周末维护，摘要是周日 2 点到 4 点暂停访问",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "announcement_published",
+      "validate_ok": true
+    }
+  },
+  {
+    "id": "tc-06",
+    "category": "tool_choice",
+    "input": "把刚才的赏金驳回文案发布出去",
+    "expect": {
+      "tools_include": ["publishCopy"]
+    }
+  },
+  {
+    "id": "mf-01",
+    "category": "missing_field",
+    "input": "帮我写赏金驳回通知，设计名称是桌面收纳盒",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "bounty_review_rejected",
+      "validate_ok": false,
+      "missing_fields": ["reject_reason"]
+    }
+  },
+  {
+    "id": "mf-02",
+    "category": "missing_field",
+    "input": "帮我写赏金驳回通知，原因是刀路不清晰",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "bounty_review_rejected",
+      "validate_ok": false,
+      "missing_fields": ["design_name"]
+    }
+  },
+  {
+    "id": "mf-03",
+    "category": "missing_field",
+    "input": "帮我写赏金通过通知，设计名是桌面收纳盒",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "bounty_review_approved",
+      "validate_ok": false,
+      "missing_fields": ["target_count"]
+    }
+  },
+  {
+    "id": "mf-04",
+    "category": "missing_field",
+    "input": "帮我写官方公告通知，标题是周末维护",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "announcement_published",
+      "validate_ok": false,
+      "missing_fields": ["announcement_summary"]
+    }
+  },
+  {
+    "id": "mf-05",
+    "category": "missing_field",
+    "input": "帮我写官方公告通知，摘要是周末暂停访问",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "announcement_published",
+      "validate_ok": false,
+      "missing_fields": ["announcement_title"]
+    }
+  },
+  {
+    "id": "ex-01",
+    "category": "locale_export",
+    "input": "帮我写赏金驳回通知，设计名称是桌面收纳盒，原因是刀路不清晰，请重新设计。写完导出 locale",
+    "expect": {
+      "tools_include": ["exportLocaleSnippet"],
+      "trigger_type_code": "bounty_review_rejected",
+      "locales": ["zh-CN", "en-US"]
+    }
+  },
+  {
+    "id": "ex-02",
+    "category": "locale_export",
+    "input": "帮我写赏金通过通知，设计名是桌面收纳盒，目标数量是 3。写完导出 locale",
+    "expect": {
+      "tools_include": ["exportLocaleSnippet"],
+      "trigger_type_code": "bounty_review_approved",
+      "locales": ["zh-CN", "en-US"]
+    }
+  },
+  {
+    "id": "ex-03",
+    "category": "locale_export",
+    "input": "帮我写官方公告通知，标题是周末维护，摘要是周日 2 点到 4 点暂停访问。写完导出 locale",
+    "expect": {
+      "tools_include": ["exportLocaleSnippet"],
+      "trigger_type_code": "announcement_published",
+      "locales": ["zh-CN", "en-US"]
+    }
+  },
+  {
+    "id": "ex-04",
+    "category": "locale_export",
+    "input": "赏金驳回：设计名台灯，原因尺寸不符。只要 en-US 片段",
+    "expect": {
+      "tools_include": ["exportLocaleSnippet"],
+      "trigger_type_code": "bounty_review_rejected",
+      "locales": ["en-US"]
+    }
+  },
+  {
+    "id": "ex-05",
+    "category": "locale_export",
+    "input": "官方公告：标题是新功能上线，摘要是支持批量导出。先预览再导出 zh-CN",
+    "expect": {
+      "tools_include": ["previewNotification", "exportLocaleSnippet"],
+      "trigger_type_code": "announcement_published",
+      "locales": ["zh-CN"]
+    }
+  },
+  {
+    "id": "bt-01",
+    "category": "bad_trigger",
+    "input": "帮我写 bounty_review_unknown 的通知，设计名是桌子。",
+    "expect": {
+      "tools_include": ["getCopySchema"],
+      "trigger_type_code": "bounty_review_unknown",
+      "validate_ok": false
+    }
+  },
+  {
+    "id": "bt-02",
+    "category": "bad_trigger",
+    "input": "校验 trigger: bounty_review_reject，设计名桌子，原因刀路不清晰",
+    "expect": {
+      "tools_include": ["validateFields"],
+      "trigger_type_code": "bounty_review_reject",
+      "validate_ok": false
+    }
+  },
+  {
+    "id": "bt-03",
+    "category": "bad_trigger",
+    "input": "bounty_awarded 要填哪些字段？",
+    "expect": {
+      "tools_include": ["getCopySchema"],
+      "trigger_type_code": "bounty_awarded",
+      "validate_ok": false
+    }
+  },
+  {
+    "id": "bt-04",
+    "category": "bad_trigger",
+    "input": "用一个不存在的类型 not_a_real_trigger 导出 locale",
+    "expect": {
+      "tools_include": ["getCopySchema"],
+      "trigger_type_code": "not_a_real_trigger",
+      "validate_ok": false
+    }
+  }
+]
