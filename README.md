@@ -6,12 +6,13 @@
 
 ## 当前进度
 
-| 阶段 | 状态            | 说明                                                                         |
-| ---- | --------------- | ---------------------------------------------------------------------------- |
-| 0    | 笔记已建        | `notes/phase-0-concepts.md`                                                  |
-| 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                          |
-| 2    | **Demo B 完成** | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
-| 3～4 | **Demo C 完成** | Demo C、`fixtures/`、`evals/`                                                |
+| 阶段 | 状态              | 说明                                                                         |
+| ---- | ----------------- | ---------------------------------------------------------------------------- |
+| 0    | 笔记已建          | `notes/phase-0-concepts.md`                                                  |
+| 1    | **Demo A 完成**   | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                          |
+| 2    | **Demo B 完成**   | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
+| 3    | **Demo C 完成**   | `/workbench`、fixtures、copy-schema                                          |
+| 4    | **评测进行中**    | `pnpm eval` 已出数；MCP / 安全小节待补                                       |
 
 ## 如何启动
 
@@ -114,3 +115,22 @@ agent-lab/
 - [Demo A 学习清单](./docs/learning/02-demo-a.md)
 - [AI SDK 中文](https://ai-sdk.com.cn/)
 - [Chatbot Tool Usage](https://ai-sdk.com.cn/docs/ai-sdk-ui/chatbot-tool-usage)
+
+## Eval
+
+本地跑：
+
+```powershell
+pnpm eval
+```
+
+最近一次（Demo C 工作台，20 cases）：
+
+| 指标         | 结果                                              |
+| ------------ | ------------------------------------------------- |
+| 工具选对率   | 90.0% (18/20)                                     |
+| 校验通过率   | 50.0% (6/12)                                      |
+| 平均对话步数 | 3.5                                               |
+| 失败类型分布 | tool_miss 2 · validate_mismatch 6 · missing_mismatch 2 |
+
+说明：`bad_trigger` 类目前常只调 `getCopySchema` 而不进 `validateFields`，拉低了校验通过率；后续可收紧 system 或调整 case 期望。
