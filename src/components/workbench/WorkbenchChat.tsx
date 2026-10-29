@@ -34,19 +34,20 @@ export function WorkbenchChat() {
       <header className="mb-4 space-y-1">
         <p className="text-sm text-zinc-500">
           <Link href="/" className="text-blue-600 hover:underline">
-            ← 主 Chat
+            ← Main chat
           </Link>
         </p>
-        <h1 className="text-xl font-semibold">Demo C · 通知文案工作台</h1>
+        <h1 className="text-xl font-semibold">Demo C · Notification copy workbench</h1>
         <p className="text-sm text-zinc-500">
-          查类型 → 校验字段 → 生成文案 → 预览 → 导出 locale。发布 / 试发需确认。
+          List types → validate fields → draft copy → preview → export locale.
+          Publish / test email require approval.
         </p>
       </header>
 
       <MessageList
         messages={messages}
         stopped={stopped}
-        emptyHint="试试：帮我写赏金驳回通知，设计名是桌面收纳盒，原因是刀路不清晰。写完预览并导出 locale。"
+        emptyHint='Try: Write a bounty rejection notice. Design name is Desktop Organizer Box, reason is unclear toolpath. Preview and export locale.'
         onApproveWriteTool={({ toolName, toolCallId, input }) => {
           const record =
             input && typeof input === "object"
@@ -85,7 +86,7 @@ export function WorkbenchChat() {
       ></MessageList>
 
       {error ? (
-        <p className="mb-2 text-sm text-red-600">请求失败：{error.message}</p>
+        <p className="mb-2 text-sm text-red-600">Request failed: {error.message}</p>
       ) : null}
 
       <ChatInput

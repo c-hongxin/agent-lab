@@ -63,23 +63,24 @@ export function HitlMiniChat() {
       <header className="mb-4 space-y-1">
         <p className="text-sm text-zinc-500">
           <Link href="/" className="text-blue-600 hover:underline">
-            ← 主 Chat（Demo A + B）
+            ← Main chat (Demo A + B)
           </Link>
         </p>
-        <h1 className="text-xl font-semibold">HITL 最小示例</h1>
+        <h1 className="text-xl font-semibold">HITL mini demo</h1>
         <p className="text-sm text-zinc-500">
-          写操作走 <code className="text-xs">ApprovalCard</code>
-          ；预览走 Generative UI。主 Chat 已合并同类能力，本页仍可单独练 HITL。
+          Write ops use <code className="text-xs">ApprovalCard</code>; preview
+          uses Generative UI. Main chat already has the same flow; this page is
+          for HITL practice only.
         </p>
       </header>
 
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-1 py-2">
         {messages.length === 0 ? (
           <p className="m-auto text-sm text-zinc-500">
-            试试：「北京天气怎么样？」 /
-            「发布文案：标题是测试标题，内容是测试内容」 / 「试发邮件给
-            test@example.com，主题是问候，正文是你好」 / 「预览通知：触发类型是
-            bounty_awarded」
+            Try: &quot;How is the weather in Beijing?&quot; / &quot;Publish
+            copy: title Test, content Hello&quot; / &quot;Send a test email to
+            test@example.com, subject Greeting, body Hello&quot; / &quot;Preview
+            notification: trigger type bounty_awarded&quot;
           </p>
         ) : null}
 
@@ -93,7 +94,7 @@ export function HitlMiniChat() {
             }
           >
             <p className="mb-1 text-xs font-medium opacity-70">
-              {message.role === "user" ? "你" : "Assistant"}
+              {message.role === "user" ? "You" : "Assistant"}
             </p>
             {message.parts.map((part, index) => {
               if (part.type === "text") {
@@ -119,7 +120,7 @@ export function HitlMiniChat() {
                   return (
                     <ApprovalCard
                       key={part.toolCallId}
-                      title={`等待确认：查询 ${city || "该城市"} 的天气？`}
+                      title={`Look up weather for ${city || "this city"}?`}
                       onApprove={() => {
                         void addToolOutput({
                           tool: "getWeatherInformation",
@@ -145,7 +146,7 @@ export function HitlMiniChat() {
                       key={part.toolCallId}
                       className="mt-2 text-sm text-emerald-700 dark:text-emerald-300"
                     >
-                      天气（{city}）：{String(part.output)}
+                      Weather ({city}): {String(part.output)}
                     </p>
                   );
                 }
@@ -156,7 +157,7 @@ export function HitlMiniChat() {
                       key={part.toolCallId}
                       className="mt-2 text-sm text-red-600"
                     >
-                      已拒绝：{part.errorText}
+                      Denied: {part.errorText}
                     </p>
                   );
                 }
@@ -166,7 +167,7 @@ export function HitlMiniChat() {
                     key={part.toolCallId}
                     className="mt-2 text-xs text-zinc-500"
                   >
-                    tool 状态：{part.state}
+                    Tool state: {part.state}
                   </p>
                 );
               }
@@ -189,7 +190,7 @@ export function HitlMiniChat() {
                   return (
                     <ApprovalCard
                       key={part.toolCallId}
-                      title="等待确认：发布文案？"
+                      title="Approve publish copy?"
                       onApprove={() => {
                         void addToolOutput({
                           tool: "publishCopy",
@@ -206,9 +207,9 @@ export function HitlMiniChat() {
                         });
                       }}
                     >
-                      <p>标题：{title || "无"}</p>
+                      <p>Title: {title || "(none)"}</p>
                       <p className="whitespace-pre-wrap">
-                        内容：{content || "无"}
+                        Content: {content || "(none)"}
                       </p>
                     </ApprovalCard>
                   );
@@ -241,7 +242,7 @@ export function HitlMiniChat() {
                     key={part.toolCallId}
                     className="mt-2 text-xs text-zinc-500"
                   >
-                    tool 状态：{part.state}
+                    Tool state: {part.state}
                   </p>
                 );
               }
@@ -270,7 +271,7 @@ export function HitlMiniChat() {
                   return (
                     <ApprovalCard
                       key={part.toolCallId}
-                      title="等待确认：试发邮件？"
+                      title="Approve sending test email?"
                       onApprove={() => {
                         void addToolOutput({
                           tool: "sendTestEmail",
@@ -287,9 +288,11 @@ export function HitlMiniChat() {
                         });
                       }}
                     >
-                      <p>收件人：{to || "无"}</p>
-                      <p>主题：{subject || "无"}</p>
-                      <p className="whitespace-pre-wrap">正文：{body || "无"}</p>
+                      <p>To: {to || "(none)"}</p>
+                      <p>Subject: {subject || "(none)"}</p>
+                      <p className="whitespace-pre-wrap">
+                        Body: {body || "(none)"}
+                      </p>
                     </ApprovalCard>
                   );
                 }
@@ -321,7 +324,7 @@ export function HitlMiniChat() {
                     key={part.toolCallId}
                     className="mt-2 text-xs text-zinc-500"
                   >
-                    tool 状态：{part.state}
+                    Tool state: {part.state}
                   </p>
                 );
               }
@@ -356,7 +359,7 @@ export function HitlMiniChat() {
                     key={part.toolCallId}
                     className="mt-2 text-xs text-zinc-500"
                   >
-                    tool 状态：{part.state}
+                    Tool state: {part.state}
                   </p>
                 );
               }
@@ -369,13 +372,13 @@ export function HitlMiniChat() {
 
       {error ? (
         <div className="mb-2 flex flex-wrap items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm dark:border-red-900 dark:bg-red-950">
-          <p className="flex-1">请求失败：{error.message}</p>
+          <p className="flex-1">Request failed: {error.message}</p>
           <button
             type="button"
             className="rounded-md bg-zinc-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-700"
             onClick={editLastUserMessage}
           >
-            编辑
+            Edit
           </button>
           <button
             type="button"
@@ -386,7 +389,7 @@ export function HitlMiniChat() {
               void regenerate();
             }}
           >
-            重新生成
+            Regenerate
           </button>
         </div>
       ) : null}
@@ -405,7 +408,7 @@ export function HitlMiniChat() {
       >
         <input
           className="flex-1 rounded-xl border border-zinc-300 bg-white px-4 py-2 text-sm outline-none focus:border-blue-500 dark:border-zinc-600 dark:bg-zinc-900"
-          placeholder="输入消息…"
+          placeholder="Type a message…"
           value={input}
           onChange={(event) => setInput(event.target.value)}
         />
@@ -414,7 +417,7 @@ export function HitlMiniChat() {
           disabled={isBusy || !input.trim()}
           className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
-          发送
+          Send
         </button>
       </form>
     </div>

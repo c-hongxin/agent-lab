@@ -1,6 +1,6 @@
 import { createOpenAI } from "@ai-sdk/openai";
 
-/** DeepSeek OpenAI 兼容层：强制 Chat Completions，避免 /v1/responses + item_reference 多轮 400 */
+/** DeepSeek OpenAI-compatible layer: force Chat Completions to avoid /v1/responses + item_reference 400s */
 export function resolveModel() {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {

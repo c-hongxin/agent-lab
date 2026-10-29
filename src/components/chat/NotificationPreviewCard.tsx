@@ -18,7 +18,7 @@ export function NotificationPreviewCard({
   return (
     <div className="mt-2 max-w-sm overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
       <div className="border-b border-zinc-100 px-4 py-2 text-xs text-zinc-500 dark:border-zinc-800">
-        通知预览 · {trigger_type_code} · {locale}
+        Notification preview · {trigger_type_code} · {locale}
       </div>
       <div className="px-4 py-3">
         <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">

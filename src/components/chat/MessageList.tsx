@@ -7,7 +7,7 @@ import { MessageItem } from "./MessageItem";
 export function MessageList({
   messages,
   stopped,
-  emptyHint = "试试：「北京天气怎么样？」/「我屏幕多宽？」/「发布文案…」/「预览通知…」",
+  emptyHint = 'Try: "How is the weather in Beijing?" / "How wide is my screen?" / "Publish copy…" / "Preview notification…"',
   onApproveWriteTool,
   onDenyWriteTool,
 }: {
@@ -43,7 +43,7 @@ export function MessageList({
         />
       ))}
       {stopped ? (
-        <p className="text-sm text-zinc-500">模型停止了，无法继续生成内容。</p>
+        <p className="text-sm text-zinc-500">Generation stopped.</p>
       ) : null}
     </div>
   );

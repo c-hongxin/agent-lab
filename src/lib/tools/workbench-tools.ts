@@ -9,7 +9,7 @@ import {
   type TriggerTypeCode,
 } from "@/copy-schema";
 
-// 列出 fixtures 里的通知类型。可选 category 过滤（work / system / growth / social）。
+// List trigger types from fixtures. Optional category filter (work / system / growth / social).
 export const listTriggerTypes = tool({
   description:
     "List available notification trigger types from demo fixtures." +
@@ -34,7 +34,7 @@ export const listTriggerTypes = tool({
   },
 });
 
-// 按 trigger_type_code 查 copy-schema，返回该类型要填的字段名。只覆盖已建 Zod 的 3 个 code。
+// Look up copy-schema by trigger_type_code. Only the 3 codes with Zod schemas are supported.
 export const getCopySchema = tool({
   description:
     "Get required copy fields for a trigger_type_code" +
@@ -69,7 +69,7 @@ export const getCopySchema = tool({
   },
 });
 
-// 用对应 Zod schema 校验模型从用户话里抽出的字段。缺字段进 missing，格式不对进 errors。
+// Validate extracted fields with the matching Zod schema. Missing → missing[]; bad format → errors[].
 export const validateFields = tool({
   description:
     "Validate notification field values against the Zod schema for a trigger_type_code" +
@@ -129,11 +129,11 @@ export const validateFields = tool({
   },
 });
 
-// 把标题/正文打成可粘贴的 locale 片段。JSON.stringify 负责转义内容里的引号。
+// Build a paste-ready locale snippet. JSON.stringify escapes quotes in values.
 export const exportLocaleSnippet = tool({
   description:
     "Export a paste-ready locale snippet for notification copy" +
-    "Use after preview, or when the user asks to export / 导出 locale / snippet.",
+    "Use after preview, or when the user asks to export locale / snippet.",
   inputSchema: z.object({
     trigger_type_code: z
       .string()
@@ -149,9 +149,9 @@ export const exportLocaleSnippet = tool({
       .describe("CTA label; default depends on locale"),
   }),
   execute: async ({ trigger_type_code, locale, title, content, cta_text }) => {
-    const cta = cta_text || (locale === "zh-CN" ? "查看详情" : "View details");
+    const cta = cta_text || "View details";
     const keyBase = trigger_type_code.replace(/_/g, ".");
-    // JSON.stringify → 合法 JS/TS 双引号字面量（含内部 " 转义）
+    // JSON.stringify → valid JS/TS double-quoted literals (escapes inner ")
     const q = (s: string) => JSON.stringify(s);
     const snippet = [
       `// ${locale} · ${trigger_type_code}`,

@@ -2,13 +2,13 @@
   {
     "id": "tc-01",
     "category": "tool_choice",
-    "input": "有哪些通知类型？",
+    "input": "What notification types are available?",
     "expect": { "tools_include": ["listTriggerTypes"] }
   },
   {
     "id": "tc-02",
     "category": "tool_choice",
-    "input": "赏金驳回通知要填哪些字段？",
+    "input": "Which fields are required for a bounty rejection notification?",
     "expect": {
       "tools_include": ["getCopySchema"],
       "trigger_type_code": "bounty_review_rejected"
@@ -17,7 +17,7 @@
   {
     "id": "tc-03",
     "category": "tool_choice",
-    "input": "帮我写赏金驳回通知，设计名称是桌面收纳盒，原因是刀路不清晰，请重新设计",
+    "input": "Write a bounty rejection notice. Design name is Desktop Organizer Box, reason is unclear toolpath. Please redesign.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "bounty_review_rejected",
@@ -27,7 +27,7 @@
   {
     "id": "tc-04",
     "category": "tool_choice",
-    "input": "帮我写赏金通过通知，设计名是桌面收纳盒，目标数量是 3",
+    "input": "Write a bounty approval notice. Design name is Desktop Organizer Box, target count is 3.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "bounty_review_approved",
@@ -37,7 +37,7 @@
   {
     "id": "tc-05",
     "category": "tool_choice",
-    "input": "帮我写官方公告通知，标题是周末维护，摘要是周日 2 点到 4 点暂停访问",
+    "input": "Write an official announcement. Title is Weekend maintenance, summary is site pause Sunday 2–4pm.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "announcement_published",
@@ -47,7 +47,7 @@
   {
     "id": "tc-06",
     "category": "tool_choice",
-    "input": "把刚才的赏金驳回文案发布出去",
+    "input": "Publish the bounty rejection copy we just drafted.",
     "expect": {
       "tools_include": ["publishCopy"]
     }
@@ -55,7 +55,7 @@
   {
     "id": "mf-01",
     "category": "missing_field",
-    "input": "帮我写赏金驳回通知，设计名称是桌面收纳盒",
+    "input": "Write a bounty rejection notice. Design name is Desktop Organizer Box.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "bounty_review_rejected",
@@ -66,7 +66,7 @@
   {
     "id": "mf-02",
     "category": "missing_field",
-    "input": "帮我写赏金驳回通知，原因是刀路不清晰",
+    "input": "Write a bounty rejection notice. Reason is unclear toolpath.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "bounty_review_rejected",
@@ -77,7 +77,7 @@
   {
     "id": "mf-03",
     "category": "missing_field",
-    "input": "帮我写赏金通过通知，设计名是桌面收纳盒",
+    "input": "Write a bounty approval notice. Design name is Desktop Organizer Box.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "bounty_review_approved",
@@ -88,7 +88,7 @@
   {
     "id": "mf-04",
     "category": "missing_field",
-    "input": "帮我写官方公告通知，标题是周末维护",
+    "input": "Write an official announcement. Title is Weekend maintenance.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "announcement_published",
@@ -99,7 +99,7 @@
   {
     "id": "mf-05",
     "category": "missing_field",
-    "input": "帮我写官方公告通知，摘要是周末暂停访问",
+    "input": "Write an official announcement. Summary is weekend access pause.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "announcement_published",
@@ -110,7 +110,7 @@
   {
     "id": "ex-01",
     "category": "locale_export",
-    "input": "帮我写赏金驳回通知，设计名称是桌面收纳盒，原因是刀路不清晰，请重新设计。写完导出 locale",
+    "input": "Write a bounty rejection notice. Design name is Desktop Organizer Box, reason is unclear toolpath. Then export locale.",
     "expect": {
       "tools_include": ["exportLocaleSnippet"],
       "trigger_type_code": "bounty_review_rejected",
@@ -120,7 +120,7 @@
   {
     "id": "ex-02",
     "category": "locale_export",
-    "input": "帮我写赏金通过通知，设计名是桌面收纳盒，目标数量是 3。写完导出 locale",
+    "input": "Write a bounty approval notice. Design name is Desktop Organizer Box, target count is 3. Then export locale.",
     "expect": {
       "tools_include": ["exportLocaleSnippet"],
       "trigger_type_code": "bounty_review_approved",
@@ -130,7 +130,7 @@
   {
     "id": "ex-03",
     "category": "locale_export",
-    "input": "帮我写官方公告通知，标题是周末维护，摘要是周日 2 点到 4 点暂停访问。写完导出 locale",
+    "input": "Write an official announcement. Title is Weekend maintenance, summary is site pause Sunday 2–4pm. Then export locale.",
     "expect": {
       "tools_include": ["exportLocaleSnippet"],
       "trigger_type_code": "announcement_published",
@@ -140,7 +140,7 @@
   {
     "id": "ex-04",
     "category": "locale_export",
-    "input": "赏金驳回：设计名台灯，原因尺寸不符。只要 en-US 片段",
+    "input": "Bounty rejection: design name Desk Lamp, reason wrong size. Export en-US snippet only.",
     "expect": {
       "tools_include": ["exportLocaleSnippet"],
       "trigger_type_code": "bounty_review_rejected",
@@ -150,7 +150,7 @@
   {
     "id": "ex-05",
     "category": "locale_export",
-    "input": "官方公告：标题是新功能上线，摘要是支持批量导出。先预览再导出 zh-CN",
+    "input": "Official announcement: title New feature launch, summary batch export supported. Preview first, then export zh-CN.",
     "expect": {
       "tools_include": ["previewNotification", "exportLocaleSnippet"],
       "trigger_type_code": "announcement_published",
@@ -160,7 +160,7 @@
   {
     "id": "bt-01",
     "category": "bad_trigger",
-    "input": "帮我写 bounty_review_unknown 的通知，设计名是桌子。",
+    "input": "Write a notification for bounty_review_unknown. Design name is Table.",
     "expect": {
       "tools_include": ["getCopySchema"],
       "trigger_type_code": "bounty_review_unknown",
@@ -170,7 +170,7 @@
   {
     "id": "bt-02",
     "category": "bad_trigger",
-    "input": "校验 trigger: bounty_review_reject，设计名桌子，原因刀路不清晰",
+    "input": "Validate trigger bounty_review_reject with design name Table and reason unclear toolpath.",
     "expect": {
       "tools_include": ["validateFields"],
       "trigger_type_code": "bounty_review_reject",
@@ -180,7 +180,7 @@
   {
     "id": "bt-03",
     "category": "bad_trigger",
-    "input": "bounty_awarded 要填哪些字段？",
+    "input": "Which fields does bounty_awarded need?",
     "expect": {
       "tools_include": ["getCopySchema"],
       "trigger_type_code": "bounty_awarded",
@@ -190,7 +190,7 @@
   {
     "id": "bt-04",
     "category": "bad_trigger",
-    "input": "用一个不存在的类型 not_a_real_trigger 导出 locale",
+    "input": "Export locale for a non-existent type not_a_real_trigger.",
     "expect": {
       "tools_include": ["getCopySchema"],
       "trigger_type_code": "not_a_real_trigger",

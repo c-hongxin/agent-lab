@@ -60,7 +60,7 @@ Key 只在服务端 Route Handler 使用；浏览器 Network 里不应出现 API
 
 基于 AI SDK 实现通知文案 Agent 工作台：流式对话、Tool Calling, HITL 与 Generative 预览；覆盖“查类型 → 填参数 → 生成文案 → 预览 → 导出”链路。数据均为自造 fixture，Inspired by notification workflows。API Key 仅 `.env.local`。
 
-试一句：“帮我写赏金驳回通知，设计名是桌面收纳盒，原因是道路不清晰。写完预览并导出 locale。”
+Try: "Write a bounty rejection notice. Design name is Desktop Organizer Box, reason is unclear toolpath. Preview and export locale."
 
 ### 会话是否持久化
 
@@ -118,19 +118,19 @@ agent-lab/
 
 ## Eval
 
-本地跑：
+Run locally:
 
 ```powershell
 pnpm eval
 ```
 
-最近一次（Demo C 工作台，20 cases）：
+Latest run (Demo C workbench, 20 cases; English prompts):
 
-| 指标         | 结果                                              |
-| ------------ | ------------------------------------------------- |
-| 工具选对率   | 90.0% (18/20)                                     |
-| 校验通过率   | 50.0% (6/12)                                      |
-| 平均对话步数 | 3.5                                               |
-| 失败类型分布 | tool_miss 2 · validate_mismatch 6 · missing_mismatch 2 |
+| Metric | Result |
+| --- | --- |
+| Tool choice accuracy | 90.0% (18/20) |
+| Validation pass rate | 50.0% (6/12) |
+| Avg steps | 3.5 |
+| Failure distribution | tool_miss 2 · validate_mismatch 6 · missing_mismatch 2 |
 
-说明：`bad_trigger` 类目前常只调 `getCopySchema` 而不进 `validateFields`，拉低了校验通过率；后续可收紧 system 或调整 case 期望。
+Note: `bad_trigger` cases often call `getCopySchema` only and skip `validateFields`, which lowers the validation pass rate. Tighten the system prompt or case expectations later if needed.

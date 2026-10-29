@@ -1,5 +1,5 @@
-// 阶段 4：对 Demo C 工作台 tools 跑 evals/cases.json
-// 用法：pnpm eval
+// Phase 4: run Demo C workbench tools against evals/cases.json
+// Usage: pnpm eval
 
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -52,10 +52,10 @@ const SYSTEM =
   "After validateFields ok:true, draft zh-CN title and body, then call previewNotification. " +
   "After preview, or when the user asks to export locale / snippet, " +
   "call exportLocaleSnippet for zh-CN and en-US. " +
-  "When the user asks to publish / 发布, call publishCopy. " +
-  "When the user asks to send a test email / 试发邮件, call sendTestEmail. " +
+  "When the user asks to publish, call publishCopy. " +
+  "When the user asks to send a test email, call sendTestEmail. " +
   "If a write tool is denied, do not retry it. " +
-  "Answer in Chinese. Data comes from demo fixtures only.";
+  "Answer in English. Data comes from demo fixtures only.";
 
 const tools = {
   listTriggerTypes,
@@ -130,7 +130,7 @@ async function runCase(c: Case) {
       prompt: c.input,
       tools,
       stopWhen: stepCountIs(10),
-      // publishCopy 无 execute：允许停在待确认，仍能统计 toolCalls
+      // publishCopy has no execute: may stop pending approval; still count toolCalls
       maxRetries: 1,
     });
 
@@ -222,14 +222,14 @@ async function main() {
 
   console.log("\n=== Eval summary ===");
   console.log(
-    `工具选对率：${((toolPass / Math.max(toolCases.length, 1)) * 100).toFixed(1)}% (${toolPass}/${toolCases.length})`,
+    `Tool choice accuracy: ${((toolPass / Math.max(toolCases.length, 1)) * 100).toFixed(1)}% (${toolPass}/${toolCases.length})`,
   );
   console.log(
-    `验证通过率：${((validatePass / Math.max(validateCases.length, 1)) * 100).toFixed(1)}% (${validatePass}/${validateCases.length})`,
+    `Validation pass rate: ${((validatePass / Math.max(validateCases.length, 1)) * 100).toFixed(1)}% (${validatePass}/${validateCases.length})`,
   );
-  console.log(`平均对话步数：${avgSteps.toFixed(1)}`);
+  console.log(`Avg steps: ${avgSteps.toFixed(1)}`);
   console.log(
-    `失败类型分布：${Object.keys(failDist).length ? JSON.stringify(failDist) : "无"}`,
+    `Failure distribution: ${Object.keys(failDist).length ? JSON.stringify(failDist) : "none"}`,
   );
 }
 
