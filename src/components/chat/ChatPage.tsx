@@ -91,6 +91,11 @@ export function ChatPage() {
             Demo C · Workbench →
           </Link>
         </p>
+        <p className="mt-1 text-sm">
+          <Link href="/mcp-lab" className="text-blue-600 hover:underline">
+            Phase 4 · MCP lab →
+          </Link>
+        </p>
       </header>
 
       <MessageList

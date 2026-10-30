@@ -10,8 +10,10 @@
     "eval": "tsx --env-file=.env.local evals/run.ts"
   },
   "dependencies": {
+    "@ai-sdk/mcp": "^1.0.100",
     "@ai-sdk/openai": "^2.0.54",
     "@ai-sdk/react": "^2.0.76",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "ai": "^5.0.76",
     "next": "16.3.2",
     "react": "19.2.8",
