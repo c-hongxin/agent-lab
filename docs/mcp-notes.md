@@ -1,13 +1,17 @@
-# MCP 笔记（阶段 4 填写）
+# MCP notes (Phase 4)
 
-## Chat 内 Tool vs MCP
+## Chat tools vs MCP
 
-|          | Chat 内 Tool            | MCP                  |
-| -------- | ----------------------- | -------------------- |
-| 定义位置 | Route Handler / useChat | 外部 MCP Server      |
-| 适用     | 本应用紧耦合能力        | 跨应用、可复用工具集 |
-| 本仓库   | Demo A～C 主路径        | 阶段 4 小实验        |
+| | Chat tool | MCP |
+| --- | --- | --- |
+| Defined where | Route Handler / `src/lib/tools` | External MCP server process |
+| Best for | App-specific business logic | Reusable capability packs across apps |
+| In this repo | Demo A–C main path | Phase 4 lab (`/mcp-lab`) |
 
-## 实验记录
+## Experiment log
 
-- （待填写）
+- Wired a stdio MCP server at `mcp/demo-triggers-server.ts` (TypeScript so the editor can typecheck / auto-import).
+- One read-only tool: `list_demo_triggers` (reads `fixtures/triggers.json`).
+- Next route `/api/mcp-lab` uses `@ai-sdk/mcp` `createMCPClient` + `Experimental_StdioMCPTransport` (`pnpm exec tsx` on the server file), then `mcpClient.tools()` + `streamText`.
+- Practice UI: `/mcp-lab`. Demo C `/workbench` still uses in-repo Chat tools (validate / export / HITL).
+- Takeaway: keep business-bound write paths as Chat tools + HITL; use MCP for reusable read-only capability packs.
