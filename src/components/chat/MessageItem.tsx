@@ -45,7 +45,7 @@ function renderWriteApproval(
     return (
       <ApprovalCard
         key={part.toolCallId}
-        title="等待确认：发布文案？"
+        title="Approve publish copy?"
         onApprove={() =>
           onApproveWriteTool?.({
             toolName,
@@ -57,8 +57,8 @@ function renderWriteApproval(
           onDenyWriteTool?.({ toolName, toolCallId: part.toolCallId })
         }
       >
-        <p>标题：{title || "无"}</p>
-        <p className="whitespace-pre-wrap">内容：{content || "无"}</p>
+        <p>Title: {title || "(none)"}</p>
+        <p className="whitespace-pre-wrap">Content: {content || "(none)"}</p>
       </ApprovalCard>
     );
   }
@@ -69,7 +69,7 @@ function renderWriteApproval(
   return (
     <ApprovalCard
       key={part.toolCallId}
-      title="等待确认：试发邮件？"
+      title="Approve sending test email?"
       onApprove={() =>
         onApproveWriteTool?.({
           toolName,
@@ -81,9 +81,9 @@ function renderWriteApproval(
         onDenyWriteTool?.({ toolName, toolCallId: part.toolCallId })
       }
     >
-      <p>收件人：{to || "无"}</p>
-      <p>主题：{subject || "无"}</p>
-      <p className="whitespace-pre-wrap">正文：{body || "无"}</p>
+      <p>To: {to || "(none)"}</p>
+      <p>Subject: {subject || "(none)"}</p>
+      <p className="whitespace-pre-wrap">Body: {body || "(none)"}</p>
     </ApprovalCard>
   );
 }
@@ -104,7 +104,7 @@ export function MessageItem({
       }
     >
       <p className="mb-1 text-xs font-medium opacity-70">
-        {isUser ? "你" : "Assistant"}
+        {isUser ? "You" : "Assistant"}
       </p>
       {message.parts.map((part, index) => {
         if (part.type === "text") {

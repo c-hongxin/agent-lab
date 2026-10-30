@@ -6,12 +6,13 @@
 
 ## 当前进度
 
-| 阶段 | 状态            | 说明                                                |
-| ---- | --------------- | --------------------------------------------------- |
-| 0    | 笔记已建        | `notes/phase-0-concepts.md`                         |
-| 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard |
-| 2    | **Demo B 完成** | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
-| 3～4 | 占位            | Demo C、`fixtures/`、`evals/`                       |
+| 阶段 | 状态              | 说明                                                                         |
+| ---- | ----------------- | ---------------------------------------------------------------------------- |
+| 0    | 笔记已建          | `notes/phase-0-concepts.md`                                                  |
+| 1    | **Demo A 完成**   | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                          |
+| 2    | **Demo B 完成**   | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
+| 3    | **Demo C 完成**   | `/workbench`、fixtures、copy-schema                                          |
+| 4    | **评测进行中**    | `pnpm eval` 已出数；MCP / 安全小节待补                                       |
 
 ## 如何启动
 
@@ -45,13 +46,21 @@ Key 只在服务端 Route Handler 使用；浏览器 Network 里不应出现 API
 
 在首页 <http://localhost:3000> 也可直接试：
 
-- 「发布文案：标题是测试，内容是你好」→ `ApprovalCard` 批准/拒绝
+- 「发布文案：标题是测试，内容是你好」→ `ApprovalCard` 批准 / 拒绝
 - 「预览通知：触发类型是 bounty_awarded」→ `NotificationPreviewCard`
 - 请求失败时 →「编辑」/「重新生成」
 
 独立练习页仍可用：<http://localhost:3000/hitl>
 
 说明：当前为 AI SDK 5，官方 cookbook 的 `needsApproval` 属 6+；本示例用「tool 无 `execute` + 前端确认后再 `addToolOutput`」做等价 HITL。UI 暂定 Tailwind 自研，不引入 AntD / assistant-ui。
+
+### Demo C · 通知文案工作台
+
+页面：<http://localhost:3000/workbench>
+
+基于 AI SDK 实现通知文案 Agent 工作台：流式对话、Tool Calling, HITL 与 Generative 预览；覆盖“查类型 → 填参数 → 生成文案 → 预览 → 导出”链路。数据均为自造 fixture，Inspired by notification workflows。API Key 仅 `.env.local`。
+
+Try: "Write a bounty rejection notice. Design name is Desktop Organizer Box, reason is unclear toolpath. Preview and export locale."
 
 ### 会话是否持久化
 
@@ -106,3 +115,22 @@ agent-lab/
 - [Demo A 学习清单](./docs/learning/02-demo-a.md)
 - [AI SDK 中文](https://ai-sdk.com.cn/)
 - [Chatbot Tool Usage](https://ai-sdk.com.cn/docs/ai-sdk-ui/chatbot-tool-usage)
+
+## Eval
+
+Run locally:
+
+```powershell
+pnpm eval
+```
+
+Latest run (Demo C workbench, 20 cases; English prompts):
+
+| Metric | Result |
+| --- | --- |
+| Tool choice accuracy | 90.0% (18/20) |
+| Validation pass rate | 50.0% (6/12) |
+| Avg steps | 3.5 |
+| Failure distribution | tool_miss 2 · validate_mismatch 6 · missing_mismatch 2 |
+
+Note: `bad_trigger` cases often call `getCopySchema` only and skip `validateFields`, which lowers the validation pass rate. Tighten the system prompt or case expectations later if needed.

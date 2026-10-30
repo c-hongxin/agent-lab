@@ -12,15 +12,15 @@ type ApprovalCardProps = {
   denyLabel?: string;
 };
 
-/** Demo B HITL：写操作等人确认时的通用确认卡 */
+/** Demo B HITL: shared approval card for write tools */
 export function ApprovalCard({
   title,
   children,
   onApprove,
   onDeny,
   disabled = false,
-  approveLabel = "批准",
-  denyLabel = "拒绝",
+  approveLabel = "Approve",
+  denyLabel = "Deny",
 }: ApprovalCardProps) {
   return (
     <div className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950">

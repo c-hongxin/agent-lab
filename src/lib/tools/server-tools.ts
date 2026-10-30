@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 
-/** Demo A 服务端 tool：假天气数据 */
+// Demo A: server execute returns random fake weather (no external API).
 export const getWeather = tool({
   description: "Get current weather for a city (demo fake data)",
   inputSchema: z.object({

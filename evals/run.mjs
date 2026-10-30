@@ -1,6 +1,6 @@
 /**
- * 阶段 4：读取 evals/cases.json 并输出统计。
- * 用法：node evals/run.mjs
+ * Phase 4 stub: read evals/cases.json and print count.
+ * Prefer: pnpm eval (evals/run.ts)
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -12,4 +12,4 @@ const casesPath = join(__dirname, "cases.json");
 const cases = JSON.parse(readFileSync(casesPath, "utf8"));
 
 console.log("Eval cases:", cases.length);
-console.log("（阶段 4 补充 runner 逻辑）");
+console.log("(Use `pnpm eval` for the full runner.)");

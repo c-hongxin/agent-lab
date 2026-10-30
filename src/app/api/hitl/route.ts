@@ -15,18 +15,18 @@ import { previewNotification } from "@/lib/tools/preview-tools";
 export const maxDuration = 30;
 
 /**
- * Demo B · 官方 HITL 最小示例（独立路由）
+ * Demo B HITL mini demo (standalone route).
  *
- * 当前依赖是 AI SDK 5，没有 cookbook 里的 `needsApproval`（属 AI SDK 6+）。
- * 等价做法：tool **不写 execute** → 模型发出调用后停在 input-available，
- * 前端批准后再 `addToolOutput`，拒绝则 `output-error`。
+ * AI SDK 5 has no cookbook `needsApproval` (that is 6+).
+ * Equivalent: tool without execute → stops at input-available →
+ * client addToolOutput on approve, or output-error on deny.
  */
 const getWeatherInformation = tool({
   description: "Show the weather in a given city to the user (HITL demo)",
   inputSchema: z.object({
     city: z.string().describe("City name, e.g. Beijing"),
   }),
-  // 故意不写 execute：等人确认后再由客户端补 result
+  // No execute on purpose: client supplies result after approval
 });
 
 export async function POST(req: Request) {
@@ -46,10 +46,11 @@ export async function POST(req: Request) {
       "You are a helpful assistant for the HITL mini demo. " +
       "When the user asks about weather, call getWeatherInformation. " +
       "When the user asks to publish a notification, call publishCopy with title and content. " +
-      "When the user asks to send a test email / 试发邮件, call sendTestEmail with to, subject, and body. " +
+      "When the user asks to send a test email, call sendTestEmail with to, subject, and body. " +
       "When the user asks to preview a notification, call previewNotification with trigger_type_code. " +
       "If a tool execution is denied or fails because the user refused, " +
-      "do not retry the same tool; tell the user the action was not performed.",
+      "do not retry the same tool; tell the user the action was not performed. " +
+      "Answer in English.",
     abortSignal: req.signal,
   });
 

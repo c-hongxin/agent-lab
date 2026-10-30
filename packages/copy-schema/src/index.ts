@@ -1,0 +1,30 @@
+import { z } from "zod";
+
+// Demo C: synthetic trigger field schemas (Inspired by notification workflows)
+
+export const bountyReviewRejectedFields = z.object({
+  design_name: z.string().min(1, "design_name is required"),
+  reject_reason: z.string().min(1, "reject_reason is required"),
+});
+
+export const bountyReviewApprovedFields = z.object({
+  design_name: z.string().min(1, "design_name is required"),
+  target_count: z.number().int().positive("target_count must be > 0"),
+});
+
+export const announcementPublishedFields = z.object({
+  announcement_title: z.string().min(1, "announcement_title is required"),
+  announcement_summary: z.string().min(1, "announcement_summary is required"),
+});
+
+export const copyFieldSchemas = {
+  bounty_review_rejected: bountyReviewRejectedFields,
+  bounty_review_approved: bountyReviewApprovedFields,
+  announcement_published: announcementPublishedFields,
+};
+
+export type TriggerTypeCode = keyof typeof copyFieldSchemas;
+
+export function getCopyFieldSchema(triggerTypeCode: TriggerTypeCode) {
+  return copyFieldSchemas[triggerTypeCode];
+}

@@ -7,11 +7,13 @@ import { MessageItem } from "./MessageItem";
 export function MessageList({
   messages,
   stopped,
+  emptyHint = 'Try: "How is the weather in Beijing?" / "How wide is my screen?" / "Publish copy…" / "Preview notification…"',
   onApproveWriteTool,
   onDenyWriteTool,
 }: {
   messages: UIMessage[];
   stopped: boolean;
+  emptyHint?: string;
   onApproveWriteTool?: (args: {
     toolName: "publishCopy" | "sendTestEmail";
     toolCallId: string;
@@ -24,8 +26,8 @@ export function MessageList({
 }) {
   if (messages.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center text-sm text-zinc-500">
-        试试：「北京天气怎么样？」/「我屏幕多宽？」/「发布文案…」/「预览通知…」
+      <div className="flex flex-1 items-center justify-center px-6 text-center text-sm text-zinc-500">
+        {emptyHint}
       </div>
     );
   }
@@ -41,7 +43,7 @@ export function MessageList({
         />
       ))}
       {stopped ? (
-        <p className="text-sm text-zinc-500">模型停止了，无法继续生成内容。</p>
+        <p className="text-sm text-zinc-500">Generation stopped.</p>
       ) : null}
     </div>
   );

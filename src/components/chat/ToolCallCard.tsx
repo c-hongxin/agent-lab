@@ -5,13 +5,13 @@ import type { UIMessage } from "ai";
 type ToolPart = Extract<UIMessage["parts"][number], { type: `tool-${string}` }>;
 
 const STATE_LABEL: Record<string, string> = {
-  "input-streaming": "参数生成中…",
-  "input-available": "等待执行…",
-  "output-available": "已完成",
-  "output-error": "执行失败",
-  "output-denied": "已拒绝",
-  "approval-requested": "等待确认",
-  "approval-responded": "已响应确认",
+  "input-streaming": "Streaming args…",
+  "input-available": "Waiting to run…",
+  "output-available": "Done",
+  "output-error": "Failed",
+  "output-denied": "Denied",
+  "approval-requested": "Awaiting approval",
+  "approval-responded": "Approval responded",
 };
 
 function formatToolName(partType: string) {

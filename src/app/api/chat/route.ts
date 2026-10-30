@@ -34,9 +34,10 @@ export async function POST(req: Request) {
     system:
       "You are a helpful assistant in the agent-lab demo. " +
       "Use getWeather for weather questions and getViewportSize for screen size questions. " +
-      "When the user asks to publish copy / 发布文案, call publishCopy. " +
-      "When the user asks to send a test email / 试发邮件, call sendTestEmail. " +
-      "When the user asks to preview a notification / 预览通知, call previewNotification. " +
+      "When the user asks to publish copy, call publishCopy. " +
+      "When the user asks to send a test email, call sendTestEmail. " +
+      "When the user asks to preview a notification, call previewNotification. " +
+      "Answer in English. " +
       "If a tool execution is denied or fails because the user refused, " +
       "do not retry the same tool; tell the user the action was not performed.",
     abortSignal: req.signal,

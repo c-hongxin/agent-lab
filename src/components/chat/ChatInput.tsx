@@ -25,7 +25,7 @@ export function ChatInput({
     >
       <input
         className="flex-1 rounded-xl border border-zinc-300 bg-white px-4 py-2 text-sm outline-none focus:border-blue-500 dark:border-zinc-600 dark:bg-zinc-900"
-        placeholder="输入消息…"
+        placeholder="Type a message…"
         value={input}
         onChange={(event) => onInputChange(event.target.value)}
       />
@@ -34,7 +34,7 @@ export function ChatInput({
         disabled={isBusy || !input.trim()}
         className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
       >
-        发送
+        Send
       </button>
       {isBusy ? (
         <button
@@ -42,7 +42,7 @@ export function ChatInput({
           onClick={onStop}
           className="rounded-xl border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-600"
         >
-          停止
+          Stop
         </button>
       ) : null}
     </form>
