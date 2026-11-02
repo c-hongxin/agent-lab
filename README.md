@@ -6,13 +6,13 @@
 
 ## 当前进度
 
-| 阶段 | 状态              | 说明                                                                         |
-| ---- | ----------------- | ---------------------------------------------------------------------------- |
-| 0    | 笔记已建          | `notes/phase-0-concepts.md`                                                  |
-| 1    | **Demo A 完成**   | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                          |
-| 2    | **Demo B 完成**   | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
-| 3    | **Demo C 完成**   | `/workbench`、fixtures、copy-schema                                          |
-| 4    | **评测进行中**    | `pnpm eval` 已出数；MCP / 安全小节待补                                       |
+| 阶段 | 状态            | 说明                                                                           |
+| ---- | --------------- | ------------------------------------------------------------------------------ |
+| 0    | 笔记已建        | `notes/phase-0-concepts.md`                                                    |
+| 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                            |
+| 2    | **Demo B 完成** | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
+| 3    | **Demo C 完成** | `/workbench`、fixtures, copy-schema                                            |
+| 4    | **评测进行中**  | `pnpm eval` 已出数；MCP / 安全小节待补                                         |
 
 ## 如何启动
 
@@ -110,6 +110,33 @@ agent-lab/
 - 练习数据均为自造 fixture，Inspired by notification workflows
 - 不拷贝公司业务代码与私有文案
 
+## 安全
+
+对照 [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)，本仓库用下面几条兜住常见风险：
+
+### 工具白名单
+
+模型只能调用 Route Handler 里显式挂上的 tools，没有任意 HTTP / Shell。
+
+- Demo C `/api/workbench`： `listTriggerTypes`, `getCopySchema`, `validateFields`, `previewNotification`, `exportLocaleSnippet`, `publishCopy`, `sendTestEmail`
+- MCP 实验 `/api/mcp-lab`： 只暴露只读 `list_demo_triggers` (读 `fixtures/triggers.json`)
+- 业务写路径不迁到 MCP；校验 / 导出 / 发布仍走 Chat tools
+
+### 写操作必须 HITL
+
+`publishCopy`, `sendTestEmail` **没有服务端 `execute`**： 流停在 `input-available`，前端 `ApprovalCard` 批准后再 `addToolOutput`；拒绝则 `output-error`, 且 system prompt 要求勿重试。演示里也不真发信、不落库。
+
+读操作（列表 / schema / 校验 / 预览 / 导出）可自动执行。
+
+### 密钥不进浏览器
+
+- `DEEPSEEK_API_KEY` 只在 `.env.local`，由服务器 `resolveModel` / Route Handler 使用
+- 勿提交 `.env*.local`；陌生人按 “如何启动” 复制 `.env.example` 即可
+
+### Fixture 脱敏
+
+`fixtures/`、eval cases, 示例文案均为自造数据；不放公司 trigger 全文、真实用户、未公开模板。Inspired by notification workflows，不复刻内部项目。
+
 ## 参考
 
 - [Demo A 学习清单](./docs/learning/02-demo-a.md)
@@ -126,11 +153,11 @@ pnpm eval
 
 Latest run (Demo C workbench, 20 cases; English prompts):
 
-| Metric | Result |
-| --- | --- |
-| Tool choice accuracy | 90.0% (18/20) |
-| Validation pass rate | 50.0% (6/12) |
-| Avg steps | 3.5 |
+| Metric               | Result                                                 |
+| -------------------- | ------------------------------------------------------ |
+| Tool choice accuracy | 90.0% (18/20)                                          |
+| Validation pass rate | 50.0% (6/12)                                           |
+| Avg steps            | 3.5                                                    |
 | Failure distribution | tool_miss 2 · validate_mismatch 6 · missing_mismatch 2 |
 
 Note: `bad_trigger` cases often call `getCopySchema` only and skip `validateFields`, which lowers the validation pass rate. Tighten the system prompt or case expectations later if needed.
