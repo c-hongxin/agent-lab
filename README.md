@@ -6,13 +6,13 @@
 
 ## 当前进度
 
-| 阶段 | 状态            | 说明                                                                           |
-| ---- | --------------- | ------------------------------------------------------------------------------ |
-| 0    | 笔记已建        | `notes/phase-0-concepts.md`                                                    |
-| 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                            |
+| 阶段 | 状态            | 说明                                                                         |
+| ---- | --------------- | ---------------------------------------------------------------------------- |
+| 0    | 笔记已建        | `notes/phase-0-concepts.md`                                                  |
+| 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                          |
 | 2    | **Demo B 完成** | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
-| 3    | **Demo C 完成** | `/workbench`、fixtures, copy-schema                                            |
-| 4    | **评测进行中**  | `pnpm eval` 已出数；MCP / 安全小节待补                                         |
+| 3    | **Demo C 完成** | `/workbench`、fixtures, copy-schema                                          |
+| 4    | **阶段 4 完成** | `pnpm eval`、 MCP 实验 [`/mcp-lab`](http://localhost:3000/mcp-lab)、安全小节 |
 
 ## 如何启动
 
@@ -62,6 +62,17 @@ Key 只在服务端 Route Handler 使用；浏览器 Network 里不应出现 API
 
 Try: "Write a bounty rejection notice. Design name is Desktop Organizer Box, reason is unclear toolpath. Preview and export locale."
 
+### Phase 4 · MCP 小实验
+
+页面：<http://localhost:3000/mcp-lab>
+
+- stdio MCP server: `mcp/demo-triggers-server.ts`，只读 tool `list_demo_triggers`（读 `fixtures/triggers.json`）
+- Route：`/api/mcp-lab` (`createMCPClient` + `mcpClient.tools()` + `streamText`)
+- Demo C `workbench` 仍用仓库内 Chat tools（校验 / 导出 / HITL）；写路径不迁到 MCP
+- 对比笔记：[`docs/mcp-notes.md`](./docs/mcp-notes.md)
+
+Try: "What demo trigger types are available?"
+
 ### 会话是否持久化
 
 **本阶段不持久化。** 刷新页面后聊天记录清空（仅活在前端 `useChat` 内存里）。若以后要落库 / localStorage，再单独做。
@@ -95,13 +106,23 @@ agent-lab/
     learning/            # Demo A / B / C 与阶段 0、4
     architecture.md
     product.md
+    mcp-notes.md         # Chat tool vs MCP
   fixtures/              # 自造 trigger（Demo C）
-  evals/                 # 评测（阶段 4）
-  packages/              # 后续 agent-ui、copy-schema
+  evals/                 # cases.json + run 脚本（pnpm eval）
+  mcp/                   # Phase 4 stdio MCP server
+  packages/copy-schema/  # Zod schema（Demo C）
   src/
-    app/api/chat/        # Route Handler（streamText + tools）
-    components/chat/     # ChatPage / MessageList / ToolCallCard …
-    lib/tools/           # 服务端 / 客户端 tool
+    app/
+      api/chat/          # Demo A/B Route Handler
+      api/workbench/     # Demo C
+      api/mcp-lab/       # Phase 4 MCP
+      workbench/         # Demo C UI
+      mcp-lab/           # MCP 实验 UI
+    components/
+      chat/              # ChatPage / MessageList / ToolCallCard …
+      workbench/
+      mcp/
+    lib/tools/           # 服务端 / 客户端 / workbench tools
 ```
 
 ## 合规
