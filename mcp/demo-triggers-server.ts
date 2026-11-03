@@ -1,7 +1,7 @@
 /**
- * Demo MCP server (stdio, read-only).
- * Exposes list_demo_triggers — reads fixtures/triggers.json only.
- * Started by /api/mcp-lab via createMCPClient + tsx; do not run by hand unless debugging.
+ * Demo MCP server（stdio，只读）。
+ * 暴露 list_demo_triggers——只读 fixtures/triggers.json。
+ * 由 /api/mcp-lab 通过 createMCPClient + tsx 拉起；除非调试，不要手动跑。
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";

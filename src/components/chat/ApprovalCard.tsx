@@ -12,7 +12,7 @@ type ApprovalCardProps = {
   denyLabel?: string;
 };
 
-/** Demo B HITL: shared approval card for write tools */
+/** Demo B HITL：写操作共用的确认卡 */
 export function ApprovalCard({
   title,
   children,

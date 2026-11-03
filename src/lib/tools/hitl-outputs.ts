@@ -1,6 +1,6 @@
 const WEATHER_OPTIONS = ["sunny", "cloudy", "rainy", "snowy"] as const;
 
-// Fake publish result after approval (not persisted).
+// 批准后的假发布结果（不落库）。
 export function fakePublishResult(title: string) {
   return {
     ok: true,
@@ -10,7 +10,7 @@ export function fakePublishResult(title: string) {
   };
 }
 
-// Fake test-email receipt after approval (no real send).
+// 批准后的假试发回执（不真发信）。
 export function fakeSendTestEmailResult(to: string, subject: string) {
   return {
     ok: true,
@@ -21,7 +21,7 @@ export function fakeSendTestEmailResult(to: string, subject: string) {
   };
 }
 
-// Fake weather after approval on the HITL practice page.
+// HITL 练习页批准后的假天气结果。
 export function fakeWeather() {
   return WEATHER_OPTIONS[Math.floor(Math.random() * WEATHER_OPTIONS.length)];
 }

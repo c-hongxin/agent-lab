@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 
-// Fake publish. No execute — wait for UI approval, then addToolOutput.
+// 假发布。无 execute——等 UI 批准后再 addToolOutput。
 export const publishCopy = tool({
   description:
     "Publish notification copy (demo only, no real publish). " +
@@ -12,7 +12,7 @@ export const publishCopy = tool({
   }),
 });
 
-// Fake test email (no real send). Same HITL path: no execute until approval.
+// 假试发邮件（不真发）。同一套 HITL：批准前无 execute。
 export const sendTestEmail = tool({
   description:
     "Send a test email (demo only, no real email). " +

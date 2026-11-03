@@ -9,7 +9,7 @@ import {
   type TriggerTypeCode,
 } from "@/copy-schema";
 
-// List trigger types from fixtures. Optional category filter (work / system / growth / social).
+// 从 fixtures 列出 trigger 类型。可选 category 过滤（work / system / growth / social）。
 export const listTriggerTypes = tool({
   description:
     "List available notification trigger types from demo fixtures." +
@@ -34,7 +34,7 @@ export const listTriggerTypes = tool({
   },
 });
 
-// Look up copy-schema by trigger_type_code. Only the 3 codes with Zod schemas are supported.
+// 按 trigger_type_code 查 copy-schema。仅支持已有 Zod schema 的 3 个 code。
 export const getCopySchema = tool({
   description:
     "Get required copy fields for a trigger_type_code" +
@@ -69,7 +69,7 @@ export const getCopySchema = tool({
   },
 });
 
-// Validate extracted fields with the matching Zod schema. Missing → missing[]; bad format → errors[].
+// 用对应 Zod schema 校验字段。缺字段 → missing[]；格式错误 → errors[]。
 export const validateFields = tool({
   description:
     "Validate notification field values against the Zod schema for a trigger_type_code" +
@@ -129,7 +129,7 @@ export const validateFields = tool({
   },
 });
 
-// Build a paste-ready locale snippet. JSON.stringify escapes quotes in values.
+// 生成可粘贴的 locale snippet。JSON.stringify 会转义值里的引号。
 export const exportLocaleSnippet = tool({
   description:
     "Export a paste-ready locale snippet for notification copy" +
@@ -151,7 +151,7 @@ export const exportLocaleSnippet = tool({
   execute: async ({ trigger_type_code, locale, title, content, cta_text }) => {
     const cta = cta_text || "View details";
     const keyBase = trigger_type_code.replace(/_/g, ".");
-    // JSON.stringify → valid JS/TS double-quoted literals (escapes inner ")
+    // JSON.stringify → 合法的 JS/TS 双引号字面量（转义内部 "）
     const q = (s: string) => JSON.stringify(s);
     const snippet = [
       `// ${locale} · ${trigger_type_code}`,

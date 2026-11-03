@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   const serverPath = join(process.cwd(), "mcp", "demo-triggers-server.ts");
 
-  // Windows-friendly: use pnpm exec tsx so the .ts MCP server runs under Node.
+  // Windows 友好：用 pnpm exec tsx 在 Node 下跑 .ts MCP server
   const mcpClient = await createMCPClient({
     transport: new Experimental_StdioMCPTransport({
       command: process.platform === "win32" ? "pnpm.cmd" : "pnpm",
@@ -27,8 +27,8 @@ export async function POST(req: Request) {
   });
 
   try {
-    // ai@5 + @ai-sdk/mcp: automatic JSON Schema validate 会对不上 (value is not a function)
-    // 显示 Zod schema; 并把 toModelOutput 改成 ai@5 的位置参数签名
+    // ai@5 + @ai-sdk/mcp：自动 JSON Schema 校验会对不上（value is not a function）
+    // 显式传入 Zod schema，并把 toModelOutput 改成 ai@5 的位置参数签名
     const rawTools = await mcpClient.tools({
       schemas: {
         list_demo_triggers: {

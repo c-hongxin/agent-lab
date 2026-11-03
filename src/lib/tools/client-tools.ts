@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-// Demo A: schema registered in /api/chat; no server execute.
+// Demo A：schema 挂在 /api/chat；无服务端 execute。
 export const getViewportSizeSchema = z.object({});
 
 export type GetViewportSizeInput = z.infer<typeof getViewportSizeSchema>;
 
-// Read viewport in browser onToolCall — server has no window.
+// 在浏览器 onToolCall 里读视口——服务端没有 window。
 export function readViewportSize() {
   if (typeof window === "undefined") {
     return { width: 0, height: 0 };

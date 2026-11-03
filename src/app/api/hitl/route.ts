@@ -15,18 +15,18 @@ import { previewNotification } from "@/lib/tools/preview-tools";
 export const maxDuration = 30;
 
 /**
- * Demo B HITL mini demo (standalone route).
+ * Demo B HITL 小实验（独立路由）。
  *
- * AI SDK 5 has no cookbook `needsApproval` (that is 6+).
- * Equivalent: tool without execute → stops at input-available →
- * client addToolOutput on approve, or output-error on deny.
+ * AI SDK 5 没有 cookbook 的 `needsApproval`（那是 6+）。
+ * 等价做法：tool 不写 execute → 停在 input-available →
+ * 客户端批准后 addToolOutput，拒绝则 output-error。
  */
 const getWeatherInformation = tool({
   description: "Show the weather in a given city to the user (HITL demo)",
   inputSchema: z.object({
     city: z.string().describe("City name, e.g. Beijing"),
   }),
-  // No execute on purpose: client supplies result after approval
+  // 故意无 execute：由客户端批准后再回填结果
 });
 
 export async function POST(req: Request) {
