@@ -6,13 +6,13 @@
 
 ## 当前进度
 
-| 阶段 | 状态              | 说明                                                                         |
-| ---- | ----------------- | ---------------------------------------------------------------------------- |
-| 0    | 笔记已建          | `notes/phase-0-concepts.md`                                                  |
-| 1    | **Demo A 完成**   | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                          |
-| 2    | **Demo B 完成**   | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
-| 3    | **Demo C 完成**   | `/workbench`、fixtures、copy-schema                                          |
-| 4    | **评测进行中**    | `pnpm eval` 已出数；MCP / 安全小节待补                                       |
+| 阶段 | 状态            | 说明                                                                         |
+| ---- | --------------- | ---------------------------------------------------------------------------- |
+| 0    | 笔记已建        | `notes/phase-0-concepts.md`                                                  |
+| 1    | **Demo A 完成** | 流式 Chat + Stop + 双 tool + `parts` / ToolCallCard                          |
+| 2    | **Demo B 完成** | HITL + 预览卡 + Retry；主 Chat 已合并；[`/hitl`](http://localhost:3000/hitl) |
+| 3    | **Demo C 完成** | `/workbench`、fixtures、copy-schema                                          |
+| 4    | **阶段 4 完成** | `pnpm eval`、MCP 实验 [`/mcp-lab`](http://localhost:3000/mcp-lab)、安全小节  |
 
 ## 如何启动
 
@@ -58,9 +58,20 @@ Key 只在服务端 Route Handler 使用；浏览器 Network 里不应出现 API
 
 页面：<http://localhost:3000/workbench>
 
-基于 AI SDK 实现通知文案 Agent 工作台：流式对话、Tool Calling, HITL 与 Generative 预览；覆盖“查类型 → 填参数 → 生成文案 → 预览 → 导出”链路。数据均为自造 fixture，Inspired by notification workflows。API Key 仅 `.env.local`。
+基于 AI SDK 实现通知文案 Agent 工作台：流式对话、Tool Calling、HITL 与 Generative 预览；覆盖「查类型 → 填参数 → 生成文案 → 预览 → 导出」链路。数据均为自造 fixture，Inspired by notification workflows。API Key 仅 `.env.local`。
 
 Try: "Write a bounty rejection notice. Design name is Desktop Organizer Box, reason is unclear toolpath. Preview and export locale."
+
+### Phase 4 · MCP 小实验
+
+页面：<http://localhost:3000/mcp-lab>
+
+- stdio MCP server：`mcp/demo-triggers-server.ts`，只读 tool `list_demo_triggers`（读 `fixtures/triggers.json`）
+- Route：`/api/mcp-lab`（`createMCPClient` + `mcpClient.tools()` + `streamText`）
+- Demo C `/workbench` 仍用仓库内 Chat tools（校验 / 导出 / HITL）；写路径不迁到 MCP
+- 对比笔记：[`docs/mcp-notes.md`](./docs/mcp-notes.md)
+
+Try: "What demo trigger types are available?"
 
 ### 会话是否持久化
 
@@ -79,8 +90,8 @@ Try: "Write a bounty rejection notice. Design name is Desktop Organizer Box, rea
 
 | B 端典型列表页                                  | Demo A Chat                                           |
 | ----------------------------------------------- | ----------------------------------------------------- |
-| 一次 `request` 拿全量 `data.list`，表格一次画完 | UI 由 **消息流** 驱动：SSE/ 流式 chunk 陆续到达再更新 |
-| 行数据静态、交互是筛选 / 分页                   | 交互是发送、Stop, tool 状态变化                       |
+| 一次 `request` 拿全量 `data.list`，表格一次画完 | UI 由 **消息流** 驱动：SSE / 流式 chunk 陆续到达再更新 |
+| 行数据静态、交互是筛选 / 分页                   | 交互是发送、Stop、tool 状态变化                       |
 | 取消请求 ≈ 关掉 loading                         | Stop 后消息可能半截保留，并有明确「已停止」态         |
 
 一句话：列表页是「请求 → 整包数据 → 渲染」；Chat 是「持续推送的消息 / part 状态机 → 渲染」。
@@ -95,13 +106,23 @@ agent-lab/
     learning/            # Demo A / B / C 与阶段 0、4
     architecture.md
     product.md
+    mcp-notes.md         # Chat tool vs MCP
   fixtures/              # 自造 trigger（Demo C）
-  evals/                 # 评测（阶段 4）
-  packages/              # 后续 agent-ui、copy-schema
+  evals/                 # cases.json + run 脚本（pnpm eval）
+  mcp/                   # Phase 4 stdio MCP server
+  packages/copy-schema/  # Zod schema（Demo C）
   src/
-    app/api/chat/        # Route Handler（streamText + tools）
-    components/chat/     # ChatPage / MessageList / ToolCallCard …
-    lib/tools/           # 服务端 / 客户端 tool
+    app/
+      api/chat/          # Demo A/B Route Handler
+      api/workbench/     # Demo C
+      api/mcp-lab/       # Phase 4 MCP
+      workbench/         # Demo C UI
+      mcp-lab/           # MCP 实验 UI
+    components/
+      chat/              # ChatPage / MessageList / ToolCallCard …
+      workbench/
+      mcp/
+    lib/tools/           # 服务端 / 客户端 / workbench tools
 ```
 
 ## 合规
@@ -109,6 +130,33 @@ agent-lab/
 - API Key 仅 `.env.local`，勿提交
 - 练习数据均为自造 fixture，Inspired by notification workflows
 - 不拷贝公司业务代码与私有文案
+
+## 安全
+
+对照 [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)，本仓库用下面几条兜住常见风险：
+
+### 工具白名单
+
+模型只能调用 Route Handler 里显式挂上的 tools，没有任意 HTTP / Shell。
+
+- Demo C `/api/workbench`：`listTriggerTypes`、`getCopySchema`、`validateFields`、`previewNotification`、`exportLocaleSnippet`、`publishCopy`、`sendTestEmail`
+- MCP 实验 `/api/mcp-lab`：只暴露只读 `list_demo_triggers`（读 `fixtures/triggers.json`）
+- 业务写路径不迁到 MCP；校验 / 导出 / 发布仍走 Chat tools
+
+### 写操作必须 HITL
+
+`publishCopy`、`sendTestEmail` **没有服务端 `execute`**：流停在 `input-available`，前端 `ApprovalCard` 批准后再 `addToolOutput`；拒绝则 `output-error`，且 system prompt 要求勿重试。演示里也不真发信、不落库。
+
+读操作（列表 / schema / 校验 / 预览 / 导出）可自动执行。
+
+### 密钥不进浏览器
+
+- `DEEPSEEK_API_KEY` 只在 `.env.local`，由服务端 `resolveModel` / Route Handler 使用
+- 勿提交 `.env*.local`；陌生人按「如何启动」复制 `.env.example` 即可
+
+### Fixture 脱敏
+
+`fixtures/`、eval cases、示例文案均为自造数据；不放公司 trigger 全文、真实用户、未公开模板。Inspired by notification workflows，不复刻内部项目。
 
 ## 参考
 
@@ -126,11 +174,11 @@ pnpm eval
 
 Latest run (Demo C workbench, 20 cases; English prompts):
 
-| Metric | Result |
-| --- | --- |
-| Tool choice accuracy | 90.0% (18/20) |
-| Validation pass rate | 50.0% (6/12) |
-| Avg steps | 3.5 |
+| Metric               | Result                                                 |
+| -------------------- | ------------------------------------------------------ |
+| Tool choice accuracy | 90.0% (18/20)                                          |
+| Validation pass rate | 50.0% (6/12)                                           |
+| Avg steps            | 3.5                                                    |
 | Failure distribution | tool_miss 2 · validate_mismatch 6 · missing_mismatch 2 |
 
 Note: `bad_trigger` cases often call `getCopySchema` only and skip `validateFields`, which lowers the validation pass rate. Tighten the system prompt or case expectations later if needed.

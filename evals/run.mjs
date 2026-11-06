@@ -1,6 +1,6 @@
 /**
- * Phase 4 stub: read evals/cases.json and print count.
- * Prefer: pnpm eval (evals/run.ts)
+ * 阶段 4 占位：读取 evals/cases.json 并打印条数。
+ * 完整跑分请用：pnpm eval（evals/run.ts）
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";

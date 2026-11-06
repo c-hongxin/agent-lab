@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 
-// Return preview-card payload. Has execute; UI renders NotificationPreviewCard without approval.
+// 返回预览卡 payload。有 execute；UI 直接渲染 NotificationPreviewCard，无需批准。
 export const previewNotification = tool({
   description:
     "Preview a notification card after copy is ready. " +

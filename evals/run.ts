@@ -1,5 +1,5 @@
-// Phase 4: run Demo C workbench tools against evals/cases.json
-// Usage: pnpm eval
+// 阶段 4：用 Demo C workbench tools 跑 evals/cases.json
+// 用法：pnpm eval
 
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -130,7 +130,7 @@ async function runCase(c: Case) {
       prompt: c.input,
       tools,
       stopWhen: stepCountIs(10),
-      // publishCopy has no execute: may stop pending approval; still count toolCalls
+      // publishCopy 无 execute：可能停在待批准；仍统计 toolCalls
       maxRetries: 1,
     });
 

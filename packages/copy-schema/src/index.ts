@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Demo C: synthetic trigger field schemas (Inspired by notification workflows)
+// Demo C：自造 trigger 字段 schema（Inspired by notification workflows）
 
 export const bountyReviewRejectedFields = z.object({
   design_name: z.string().min(1, "design_name is required"),

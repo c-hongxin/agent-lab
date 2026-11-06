@@ -44,3 +44,8 @@ next-env.d.ts
 # Cursor rules (local, do not commit)
 .cursor/
 *.mdc
+
+# ephemeral local scratch (never commit)
+temp/
+_tmp_*
+*.tmp

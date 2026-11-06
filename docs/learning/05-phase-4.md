@@ -6,17 +6,17 @@
 
 **要做什么：**
 
-- [ ] 新建 `evals/cases.json`，至少 **20 条** case，覆盖：
+- [√] 新建 `evals/cases.json`，至少 **20 条** case，覆盖：
   - 工具选对（该调 `validateFields` 时不要只聊天）
   - 缺字段拦截
   - 多语言导出
   - 错误 trigger_code
-- [ ] 写 `evals/run.mjs`（或 `run.ts`）脚本，输出统计：
+- [√] 写 `evals/run.mjs`（或 `run.ts`）脚本，输出统计：
   - 工具选对率
   - 校验通过率
   - 平均对话步数
   - 失败类型分布
-- [ ] 把结果数字写进根 `README.md` 的 **Eval** 小节
+- [√] 把结果数字写进根 `README.md` 的 **Eval** 小节
 
 **参考：**
 
@@ -27,9 +27,9 @@
 
 **要做什么：**
 
-- [ ] 阅读 MCP 与 Function Calling 区别（见 [附录 · 链接速查](./99-appendix.md#链接速查中文优先)）
-- [ ] 按 [AI SDK MCP tools](https://ai-sdk.com.cn/docs/ai-sdk-core/mcp-tools) 接 **1 个只读** MCP tool（或 mock server）
-- [ ] 在 `docs/mcp-notes.md` 写 **半页**：Chat 内 tool vs MCP 的适用场景
+- [√] 阅读 MCP 与 Function Calling 区别（见 [附录 · 链接速查](./99-appendix.md#链接速查中文优先)）
+- [√] 按 [AI SDK MCP tools](https://ai-sdk.com.cn/docs/ai-sdk-core/mcp-tools) 接 **1 个只读** MCP tool（或 mock server）
+- [√] 在 `docs/mcp-notes.md` 写 **半页**：Chat 内 tool vs MCP 的适用场景
 
 **不要求**：把 Demo C 全部改成 MCP。
 
@@ -42,8 +42,8 @@
 
 ## 安全（必做阅读 + README 一节）
 
-- [ ] 扫一眼 [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)（中文解读搜即可）
-- [ ] README 写清：**工具白名单、写操作 HITL、密钥不进浏览器、fixture 脱敏**
+- [√] 扫一眼 [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)（中文解读搜即可）
+- [√] README 写清：**工具白名单、写操作 HITL、密钥不进浏览器、fixture 脱敏**
 
 ## 交付物
 
@@ -56,8 +56,8 @@
 
 ## 验收标准
 
-- [ ] README 陌生人能按文档 `pnpm dev` 跑起来
-- [ ] eval 脚本能在本机跑出 4 项统计
-- [ ] 能回答：若把 Demo C 试点进真实运营后台，你会限制哪些 tool、哪些必须 HITL
+- [√] README 陌生人能按文档 `pnpm dev` 跑起来
+- [√] eval 脚本能在本机跑出 4 项统计
+- [√] 能回答：若把 Demo C 试点进真实运营后台，你会限制哪些 tool、哪些必须 HITL
 
 返回 [学习方案首页](../../工程师学习.md) · [附录](./99-appendix.md)
