@@ -42,6 +42,7 @@ export function MessageList({
           onDenyWriteTool={onDenyWriteTool}
         />
       ))}
+      {/* stopped 由点击 Stop 时手动置位，不是从 useChat status 推出来的。 */}
       {stopped ? (
         <p className="text-sm text-zinc-500">Generation stopped.</p>
       ) : null}

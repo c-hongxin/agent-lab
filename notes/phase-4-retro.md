@@ -35,7 +35,7 @@
 
 ## 5. Eval 与回归（可选）
 
-- 本仓怎么跑（cases / 命令 / 看哪些数）：evals/cases.json（20+）+ pnpm eval；看工具选对率、校验通过率、平均步数、失败分布。
+- 本仓怎么跑（cases / 命令 / 看哪些数）：evals/cases.jsonc（20+）+ pnpm eval；看工具选对率、校验通过率、平均步数、失败分布。
 - 改 prompt 或 schema 后怎么回归：用同一批 case 再跑一遍，对比数字，不靠手测两句。
 - 我读数字时注意到的局限：有的 bad_trigger 只调了 getCopySchema 就停，校验通过率要结合失败分布解读。
 

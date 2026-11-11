@@ -47,6 +47,7 @@ export async function POST(req: Request) {
         name,
         {
           ...tool,
+          // MCP 返回 content 块；改成 ai@5 要的 { type: "text", value }。
           toModelOutput: (output: unknown) => {
             const result = output as {
               content?: Array<{ type: string; text?: string }>;
@@ -77,8 +78,10 @@ export async function POST(req: Request) {
         "When the user asks what notification / trigger types exist, " +
         "call list_demo_triggers (from the MCP server). " +
         "Answer in English. Data is demo fixtures only.",
+      // 前端 stop() 会 abort 这次请求，服务端生成跟着停。
       abortSignal: req.signal,
       onFinish: async () => {
+        // stdio 子进程要显式关掉，否则请求结束后 tsx 还挂着。
         await mcpClient.close();
       },
     });

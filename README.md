@@ -66,7 +66,7 @@ Try: "Write a bounty rejection notice. Design name is Desktop Organizer Box, rea
 
 页面：<http://localhost:3000/mcp-lab>
 
-- stdio MCP server：`mcp/demo-triggers-server.ts`，只读 tool `list_demo_triggers`（读 `fixtures/triggers.json`）
+- stdio MCP server：`mcp/demo-triggers-server.ts`，只读 tool `list_demo_triggers`（读 `fixtures/triggers.jsonc`）
 - Route：`/api/mcp-lab`（`createMCPClient` + `mcpClient.tools()` + `streamText`）
 - Demo C `/workbench` 仍用仓库内 Chat tools（校验 / 导出 / HITL）；写路径不迁到 MCP
 - 对比笔记：[`docs/mcp-notes.md`](./docs/mcp-notes.md)
@@ -108,7 +108,7 @@ agent-lab/
     product.md
     mcp-notes.md         # Chat tool vs MCP
   fixtures/              # 自造 trigger（Demo C）
-  evals/                 # cases.json + run 脚本（pnpm eval）
+  evals/                 # cases.jsonc + run 脚本（pnpm eval）
   mcp/                   # Phase 4 stdio MCP server
   packages/copy-schema/  # Zod schema（Demo C）
   src/
@@ -140,7 +140,7 @@ agent-lab/
 模型只能调用 Route Handler 里显式挂上的 tools，没有任意 HTTP / Shell。
 
 - Demo C `/api/workbench`：`listTriggerTypes`、`getCopySchema`、`validateFields`、`previewNotification`、`exportLocaleSnippet`、`publishCopy`、`sendTestEmail`
-- MCP 实验 `/api/mcp-lab`：只暴露只读 `list_demo_triggers`（读 `fixtures/triggers.json`）
+- MCP 实验 `/api/mcp-lab`：只暴露只读 `list_demo_triggers`（读 `fixtures/triggers.jsonc`）
 - 业务写路径不迁到 MCP；校验 / 导出 / 发布仍走 Chat tools
 
 ### 写操作必须 HITL

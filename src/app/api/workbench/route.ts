@@ -40,6 +40,7 @@ export async function POST(req: Request) {
       "When the user asks to send a test email, call sendTestEmail. " +
       "If a write tool is denied, do not retry it. " +
       "Answer in English. Data comes from demo fixtures only.",
+    // 前端 stop() 会 abort 这次请求，服务端生成跟着停。
     abortSignal: req.signal,
   });
 

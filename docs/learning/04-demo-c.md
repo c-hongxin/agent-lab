@@ -59,7 +59,7 @@
 
 | 工作里熟悉的                  | Demo C 对应                               |
 | ----------------------------- | ----------------------------------------- |
-| `trigger_type_code` 枚举      | `fixtures/triggers.json` 自造 10～15 条   |
+| `trigger_type_code` 枚举      | `fixtures/triggers.jsonc` 自造 10～15 条   |
 | `business_params` 表单校验    | `validateFields` + `packages/copy-schema` |
 | C 端通知列表展示              | `previewNotification` 预览卡              |
 | `zh-CN` / `en-US` locale 文件 | `exportLocaleSnippet`                     |
@@ -72,9 +72,9 @@ agent-lab/
   packages/agent-ui/           # Message / ToolCard / ApprovalCard / PreviewCard
   packages/copy-schema/        # Zod schema + 自造 trigger 定义
   fixtures/
-    triggers.json              # 假 trigger 列表
+    triggers.jsonc              # 假 trigger 列表
     email-templates/           # 假 HTML，变量名自造
-  evals/cases.json             # 阶段 4 填充，本阶段可先建空文件
+  evals/cases.jsonc             # 阶段 4 填充，本阶段可先建空文件
   docs/
     architecture.md
     product.md
@@ -89,11 +89,11 @@ agent-lab/
 | W4    | 5 个 tool + 主路径 + HITL     | [√]  |
 | W4 末 | architecture 初稿             | [√]  |
 
-> 当前分支：`demo-c`（从 `demo-b` 拉出）。W3 第 1 步：`fixtures/triggers.json` 已扩到 12 条假 trigger。
+> 当前分支：`demo-c`（从 `demo-b` 拉出）。W3 第 1 步：`fixtures/triggers.jsonc` 已扩到 12 条假 trigger。
 
 **每周要点**
 
-1. **W3**：写 `docs/product.md`；`fixtures/triggers.json` 10+ 条；`copy-schema` 包 2～3 个 trigger 的 Zod
+1. **W3**：写 `docs/product.md`；`fixtures/triggers.jsonc` 10+ 条；`copy-schema` 包 2～3 个 trigger 的 Zod
 2. **W4**：实现 5 个 tool；打通「问一句 → 预览卡」；写操作走 HITL
 3. **W4 末**：`architecture.md` 初稿：Browser → Route Handler → Tools → Fixtures
 

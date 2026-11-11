@@ -116,6 +116,7 @@ export function HitlMiniChat() {
                     ? String((part.input as { city?: string }).city ?? "")
                     : "";
 
+                // 无 execute：参数齐了先出确认卡，批准后再 addToolOutput。下面两个写 tool 同一道门。
                 if (part.state === "input-available") {
                   return (
                     <ApprovalCard

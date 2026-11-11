@@ -1,4 +1,4 @@
-// 阶段 4：用 Demo C workbench tools 跑 evals/cases.json
+// 阶段 4：用 Demo C workbench tools 跑 evals/cases.jsonc
 // 用法：pnpm eval
 
 import { readFileSync } from "node:fs";
@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { generateText, stepCountIs } from "ai";
 
 import { resolveModel } from "../src/lib/ai/resolve-model";
+import { parseJsonc } from "../src/lib/parse-jsonc";
 import { previewNotification } from "../src/lib/tools/preview-tools";
 import {
   exportLocaleSnippet,
@@ -18,6 +19,7 @@ import { publishCopy, sendTestEmail } from "../src/lib/tools/write-tools";
 
 type Expect = {
   tools_include?: string[];
+  // 卷子上标明期望的 code，当前打分不拿它和模型入参对比。
   trigger_type_code?: string;
   validate_ok?: boolean;
   missing_fields?: string[];
@@ -39,9 +41,9 @@ type FailKind =
   | "error";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const cases = JSON.parse(
-  readFileSync(join(__dirname, "cases.json"), "utf8"),
-) as Case[];
+const cases = parseJsonc<Case[]>(
+  readFileSync(join(__dirname, "cases.jsonc"), "utf8"),
+);
 
 const SYSTEM =
   "You are the notification copy workbench assistant (Demo C). " +
@@ -145,6 +147,7 @@ async function runCase(c: Case) {
 
     if (typeof c.expect.validate_ok === "boolean") {
       const validates = collectValidateResults(steps);
+      // 没调用也算失败：bad_trigger 只查了 schema 时会落在这里。
       const last = validates[validates.length - 1];
       if (!last || last.ok !== c.expect.validate_ok)
         fails.push("validate_mismatch");

@@ -113,6 +113,7 @@ export const validateFields = tool({
     const errors: string[] = [];
     for (const issue of parsed.error.issues) {
       const key = issue.path.join(".") || "(root)";
+      // Zod 把「字段没传」报成 invalid_type + received undefined，其余算格式错误。
       if (issue.code === "invalid_type" && issue.received === "undefined") {
         missing.push(key);
       } else {
