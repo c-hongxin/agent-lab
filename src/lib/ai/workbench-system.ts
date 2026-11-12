@@ -5,6 +5,8 @@ export const workbenchSystemPrompt =
   "or asks to list categories like work/system, call listTriggerTypes. " +
   "When the user asks which fields a trigger needs, call getCopySchema. " +
   "When the user provides field values for a notification, call validateFields. " +
+  "Pass trigger_type_code exactly as the user wrote it. Do not replace an unknown code with a similar supported one. " +
+  "Pass only field values the user actually gave. Do not invent missing required fields. " +
   "After validateFields ok:true, draft zh-CN title and body, then call previewNotification. " +
   "After preview, or when the user asks to export locale / snippet, " +
   "call exportLocaleSnippet for zh-CN and en-US. " +
