@@ -23,6 +23,14 @@
 //                      缺一个记 locale_miss。
 //
 // 同一题可以同时有多种失败。
+// 日志里 FAIL 后面的词是脚本自己记的失败类型，不是模型写出的句子：
+//   tool_miss          tools_include 里的某个 tool 这轮一次都没出现。
+//   validate_mismatch  写了 validate_ok，但最后一次 validateFields 的 ok 和它不相等。
+//                      没调到 validateFields 也记这一条。
+//   missing_mismatch   写了 missing_fields，但最后一次 validateFields 的 missing 里没有这个字段名。
+//                      每缺一个字段记一条。
+//   locale_miss        locales 里的某个 locale 没有出现在 exportLocaleSnippet 的入参里。
+//   error              这题跑的时候抛错，后面的检查没做成。
 //
 // category：
 //   tool_choice    这句话该调到列出的 tool。
