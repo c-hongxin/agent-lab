@@ -174,11 +174,11 @@ pnpm eval
 
 Latest run (Demo C workbench, 20 cases; English prompts):
 
-| Metric               | Result                                                 |
-| -------------------- | ------------------------------------------------------ |
-| Tool choice accuracy | 90.0% (18/20)                                          |
-| Validation pass rate | 50.0% (6/12)                                           |
-| Avg steps            | 3.5                                                    |
-| Failure distribution | tool_miss 2 · validate_mismatch 6 · missing_mismatch 2 |
+| Metric               | Result       |
+| -------------------- | ------------ |
+| Tool choice accuracy | 90.0% (18/20) |
+| Validation pass rate | 100.0% (9/9)  |
+| Avg steps            | 3.6           |
+| Failure distribution | tool_miss 2   |
 
-Note: `bad_trigger` cases often call `getCopySchema` only and skip `validateFields`, which lowers the validation pass rate. Tighten the system prompt or case expectations later if needed.
+Note: the two misses are `tc-06` (publish with no prior draft in a single turn) and `bt-04` (export of an unknown trigger follows the export instruction instead of `getCopySchema`).
