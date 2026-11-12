@@ -6,7 +6,7 @@
 
 **要做什么：**
 
-- [√] 新建 `evals/cases.json`，至少 **20 条** case，覆盖：
+- [√] 新建 `evals/cases.jsonc`，至少 **20 条** case，覆盖：
   - 工具选对（该调 `validateFields` 时不要只聊天）
   - 缺字段拦截
   - 多语言导出
@@ -49,7 +49,7 @@
 
 | 交付物                    | 说明                             |
 | ------------------------- | -------------------------------- |
-| `evals/cases.json` + 脚本 | 20+ case，有数字                 |
+| `evals/cases.jsonc` + 脚本 | 20+ case，有数字                 |
 | `docs/mcp-notes.md`       | MCP 对比笔记                     |
 | README 终版               | 启动、架构、eval、合规、演示步骤 |
 | 可选：录屏 3～5 分钟      | 本地演示 Demo C                  |

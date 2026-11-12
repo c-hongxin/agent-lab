@@ -33,6 +33,7 @@ function renderWriteApproval(
   onApproveWriteTool?: MessageItemProps["onApproveWriteTool"],
   onDenyWriteTool?: MessageItemProps["onDenyWriteTool"],
 ) {
+  // 只有参数齐、还没执行时才出确认卡；已有结果的 part 走下面的卡片。
   if (part.state !== "input-available") {
     return null;
   }
@@ -142,6 +143,7 @@ export function MessageItem({
           }
         }
 
+        // 预览卡只在有完整 output 时画，避免 input-streaming 半截字段。
         if (
           part.type === "tool-previewNotification" &&
           part.state === "output-available" &&

@@ -49,7 +49,7 @@
 
 - [ ] `docs/demo-b-state-machine.md`
 - [ ] Demo B [验收](./03-demo-b.md#验收标准)
-- [ ] `docs/product.md` + `fixtures/triggers.json`
+- [ ] `docs/product.md` + `fixtures/triggers.jsonc`
 - [ ] `packages/copy-schema` 起步
 - [ ] 选定 UI：AntD 或 assistant-ui
 
@@ -62,7 +62,7 @@
 
 ### Week 5 — Eval + 体验
 
-- [ ] `evals/cases.json` 20+ 条 + 跑分脚本
+- [ ] `evals/cases.jsonc` 20+ 条 + 跑分脚本
 - [ ] 错误态 / 超时态 / 空 trigger 提示
 - [ ] `architecture.md` + `product.md` 定稿
 

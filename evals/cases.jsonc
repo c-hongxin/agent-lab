@@ -1,3 +1,44 @@
+// pnpm eval 的固定考卷。evals/run.ts 逐条把 input 当成用户的一句话，
+// 用 workbench 那套 tools 跑一轮，再按 expect 判分。
+// 脚本不看模型写出的句子，只看 toolCalls，以及 validateFields 的返回值、exportLocaleSnippet 的入参。
+//
+// 一条 case：
+//   id        题号，只打在日志里。
+//   category  题型标签，只打在日志里。四类见下方。
+//   input     发给模型的那一句英文。
+//   expect    标准答案。脚本只读下面 5 个字段。
+//
+// expect：
+//   tools_include      这些 tool 都必须出现（多调可以，少一个记 tool_miss）。
+//                      工具选对率的分母 = 写了 tools_include 的题。
+//   trigger_type_code  这题心里想的 trigger code，只给读卷的人看。
+//                      脚本不拿它和模型传入的 code 比较。
+//   validate_ok        true 或 false。对比本轮最后一次 validateFields 的 ok。
+//                      没调到 validateFields 也记 validate_mismatch。
+//                      没写这个字段的题，不进校验通过率的分母。
+//   missing_fields     仅当本题写了 validate_ok 时才检查。
+//                      最后一次 validateFields 的 missing 要包含这里每个字段名，
+//                      缺一个记一条 missing_mismatch。
+//   locales            exportLocaleSnippet 的入参 locale 要覆盖这里每个值，
+//                      缺一个记 locale_miss。
+//
+// 同一题可以同时有多种失败。
+// 日志里 FAIL 后面的词是脚本自己记的失败类型，不是模型写出的句子：
+//   tool_miss          tools_include 里的某个 tool 这轮一次都没出现。
+//   validate_mismatch  写了 validate_ok，但最后一次 validateFields 的 ok 和它不相等。
+//                      没调到 validateFields 也记这一条。
+//   missing_mismatch   写了 missing_fields，但最后一次 validateFields 的 missing 里没有这个字段名。
+//                      每缺一个字段记一条。
+//   locale_miss        locales 里的某个 locale 没有出现在 exportLocaleSnippet 的入参里。
+//   error              这题跑的时候抛错，后面的检查没做成。
+//
+// category：
+//   tool_choice    这句话该调到列出的 tool。
+//   missing_field  故意少填。validate_ok 为 false，且 missing 里要有列出的字段。
+//   locale_export  必须调 exportLocaleSnippet，并带上列出的 locale。
+//   bad_trigger    错误或不存在的 code。
+//                  tools_include 为 getCopySchema 时，未知 code 由 schema 结果表达，不写 validate_ok。
+//                  用户明确说 Validate 时才要求 validateFields，且 validate_ok 为 false。
 [
   {
     "id": "tc-01",
@@ -163,8 +204,7 @@
     "input": "Write a notification for bounty_review_unknown. Design name is Table.",
     "expect": {
       "tools_include": ["getCopySchema"],
-      "trigger_type_code": "bounty_review_unknown",
-      "validate_ok": false
+      "trigger_type_code": "bounty_review_unknown"
     }
   },
   {
@@ -183,8 +223,7 @@
     "input": "Which fields does bounty_awarded need?",
     "expect": {
       "tools_include": ["getCopySchema"],
-      "trigger_type_code": "bounty_awarded",
-      "validate_ok": false
+      "trigger_type_code": "bounty_awarded"
     }
   },
   {
@@ -193,8 +232,7 @@
     "input": "Export locale for a non-existent type not_a_real_trigger.",
     "expect": {
       "tools_include": ["getCopySchema"],
-      "trigger_type_code": "not_a_real_trigger",
-      "validate_ok": false
+      "trigger_type_code": "not_a_real_trigger"
     }
   }
 ]

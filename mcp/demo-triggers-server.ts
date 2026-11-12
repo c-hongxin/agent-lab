@@ -1,9 +1,10 @@
 /**
  * Demo MCP server（stdio，只读）。
- * 暴露 list_demo_triggers——只读 fixtures/triggers.json。
+ * 暴露 list_demo_triggers——只读 fixtures/triggers.jsonc。
  * 由 /api/mcp-lab 通过 createMCPClient + tsx 拉起；除非调试，不要手动跑。
  */
 import { readFileSync } from "node:fs";
+import { parseJsonc } from "../src/lib/parse-jsonc.ts";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -18,9 +19,9 @@ type TriggerItem = {
 };
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const fixtures = JSON.parse(
-  readFileSync(join(root, "fixtures", "triggers.json"), "utf8"),
-) as { items: TriggerItem[] };
+const fixtures = parseJsonc<{ items: TriggerItem[] }>(
+  readFileSync(join(root, "fixtures", "triggers.jsonc"), "utf8"),
+);
 
 const server = new McpServer({
   name: "agent-lab-demo-triggers",
@@ -39,6 +40,7 @@ server.registerTool(
         .optional()
         .describe("Optional category filter, e.g. work"),
     },
+    // 告诉客户端这是只读、无副作用、不访问外网。
     annotations: {
       readOnlyHint: true,
       destructiveHint: false,
