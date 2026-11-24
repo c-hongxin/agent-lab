@@ -4,6 +4,7 @@ import type { UIMessage } from "ai";
 
 type ToolPart = Extract<UIMessage["parts"][number], { type: `tool-${string}` }>;
 
+// AI SDK tool part 的 state；半截参数停在 input-streaming。
 const STATE_LABEL: Record<string, string> = {
   "input-streaming": "Streaming args…",
   "input-available": "Waiting to run…",

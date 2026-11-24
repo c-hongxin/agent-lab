@@ -17,6 +17,7 @@ export function McpLabChat() {
 
   const { messages, sendMessage, status, stop, error } = useChat({
     transport: new DefaultChatTransport({ api: "/api/mcp-lab" }),
+    // MCP tool 返回后自动续轮，模型才能根据列表回答。
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
   });
 
@@ -56,6 +57,7 @@ export function McpLabChat() {
         onInputChange={setInput}
         onStop={() => {
           stop();
+          // 停完 status 会回到 ready，文案靠这个本地标记。
           setStopped(true);
         }}
         onSubmit={() => {

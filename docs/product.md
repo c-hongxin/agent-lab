@@ -23,7 +23,7 @@ Agent 应完成
 
 ### 做
 
-- 自造 `fixtures/triggers.json`（10+ 条）
+- 自造 `fixtures/triggers.jsonc`（10+ 条）
 - 服务端 tools：list / schema / validate / export
 - 预览卡 + 可选 HITL 写操作
 - 流式对话工作台 UI

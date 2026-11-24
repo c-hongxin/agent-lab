@@ -7,7 +7,7 @@ Notification Copy Agent Workbench。数据均为自造 fixture。
 Browser UI（`/workbench` / `useChat`）
 → `POST /api/workbench`（`streamText` + tools）
 → Tools
-→ `fixtures/triggers.json` + `packages/copy-schema`
+→ `fixtures/triggers.jsonc` + `packages/copy-schema`
 
 ## Tools
 

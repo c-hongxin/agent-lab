@@ -35,8 +35,10 @@ export function ChatPage() {
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
+    // 客户端 tool 回填后自动再请求一轮，否则模型拿不到 tool-result 就停住。
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
     async onToolCall({ toolCall }) {
+      // dynamic tool 没有固定 schema，这里不代执行。
       if (toolCall.dynamic) {
         return;
       }
@@ -70,6 +72,7 @@ export function ChatPage() {
 
     const lastUser = messages[lastUserIndex];
     setInput(getMessageText(lastUser));
+    // 丢掉这条用户消息及其后的回复，方便改字重发。
     setMessages(messages.slice(0, lastUserIndex));
     clearError();
   }
@@ -126,6 +129,7 @@ export function ChatPage() {
           });
         }}
         onDenyWriteTool={({ toolName, toolCallId }) => {
+          // 拒绝也要回填结果，否则协议上仍是「有 tool-call、无 result」。
           void addToolOutput({
             state: "output-error",
             tool: toolName,
@@ -168,6 +172,7 @@ export function ChatPage() {
         onInputChange={setInput}
         onStop={() => {
           stop();
+          // useChat 的 status 停完会回到 ready，本地 flag 才用来显示 “Generation stopped.”。
           setStopped(true);
         }}
         onSubmit={() => {

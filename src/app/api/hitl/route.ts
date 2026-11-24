@@ -51,6 +51,7 @@ export async function POST(req: Request) {
       "If a tool execution is denied or fails because the user refused, " +
       "do not retry the same tool; tell the user the action was not performed. " +
       "Answer in English.",
+    // 前端 stop() 会 abort 这次请求，服务端生成跟着停。
     abortSignal: req.signal,
   });
 

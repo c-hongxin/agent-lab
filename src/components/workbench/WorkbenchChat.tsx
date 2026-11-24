@@ -23,6 +23,7 @@ export function WorkbenchChat() {
       transport: new DefaultChatTransport({
         api: "/api/workbench",
       }),
+      // 服务端 tool 跑完后自动续轮，让模型接着预览 / 导出。
       sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
     },
   );
@@ -73,6 +74,7 @@ export function WorkbenchChat() {
           });
         }}
         onDenyWriteTool={({ toolName, toolCallId }) => {
+          // 拒绝也要回填 output-error，模型才知道不要当成没调用。
           void addToolOutput({
             state: "output-error",
             tool: toolName,
@@ -95,6 +97,7 @@ export function WorkbenchChat() {
         onInputChange={setInput}
         onStop={() => {
           stop();
+          // 停完 status 会回到 ready，文案靠这个本地标记。
           setStopped(true);
         }}
         onSubmit={() => {

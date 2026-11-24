@@ -22,6 +22,7 @@ export async function POST(req: Request) {
     stopWhen: stepCountIs(5),
     tools: {
       getWeather,
+      // 无 execute：视口只在浏览器 onToolCall 里读。
       getViewportSize: {
         description:
           "Get the browser viewport width and height in pixels. Use when the user asks about screen or window size.",
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
       "Answer in English. " +
       "If a tool execution is denied or fails because the user refused, " +
       "do not retry the same tool; tell the user the action was not performed.",
+    // 前端 stop() 会 abort 这次请求，服务端生成跟着停。
     abortSignal: req.signal,
   });
 
