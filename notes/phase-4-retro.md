@@ -48,7 +48,7 @@
 
 ## 7. 未做 / 下次加深（2～3 条）
 
-- 会话持久化（现在刷新就清空）
+- 工作台会话：刷新还在（地址栏 `?session=` + 服务端内存表）。`next dev` 重启会丢；主聊天和 `/hitl` 仍不持久化。
 - 有多步审批需求时再看 LangGraph
 - tc-06 / bt-04 先留着：前者是没有上文也强制发布，后者要先选定「未知 code 先查 schema」还是「考卷接受导出」。
 - Generative UI：模型只交结构化数据，版式由组件决定。previewNotification 的 execute 返回 trigger_type_code, title, content, cta_text, locale。MessageItem 看到 tool-previewNotification 且状态是 output-available 时，把 part.output 交给 NotificationPreviewCard。Markdown 做不到固定的标题、正文、按钮三格，模型一改措辞，版式就散。协议的版本就是这份字段清单：要加字段，同时改 tool 的返回值和 NotificationPreviewCardProps。旧消息里没有新字段时，卡片用默认值，例如 cta_text 缺了就显示 View details。
