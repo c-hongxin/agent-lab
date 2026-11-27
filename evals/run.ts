@@ -129,6 +129,8 @@ async function runCase(c: Case) {
       stopWhen: stepCountIs(10),
       // 请求失败再试 1 次，不让一次网络错误停掉整卷。
       maxRetries: 1,
+      // 温度为 0，同一道题重跑时少换工具。不设的话走 DeepSeek 默认采样。
+      temperature: 0,
     });
 
     stepCount = result.steps.length;
@@ -162,6 +164,10 @@ async function runCase(c: Case) {
       for (const locale of c.expect.locales) {
         if (!locales.has(locale)) fails.push("locale_miss");
       }
+    }
+
+    if (fails.length > 0) {
+      console.log(`    tools: ${[...toolNames].join(", ") || "(none)"}`);
     }
   } catch (err) {
     fails.push("error");

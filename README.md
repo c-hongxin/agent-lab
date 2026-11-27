@@ -75,7 +75,7 @@ Try: "What demo trigger types are available?"
 
 ### 会话是否持久化
 
-**本阶段不持久化。** 刷新页面后聊天记录清空（仅活在前端 `useChat` 内存里）。若以后要落库 / localStorage，再单独做。
+工作台 `/workbench` 会把对话放在服务端内存表里，刷新后还在（地址栏 `?session=`）。`next dev` 重启会丢。主聊天和 `/hitl` 仍只活在前端 `useChat` 内存里，刷新即清空。
 
 ## 与普通 Chat 的差异
 
@@ -174,11 +174,11 @@ pnpm eval
 
 Latest run (Demo C workbench, 20 cases; English prompts):
 
-| Metric               | Result       |
-| -------------------- | ------------ |
-| Tool choice accuracy | 90.0% (18/20) |
+| Metric               | Result        |
+| -------------------- | ------------- |
+| Tool choice accuracy | 95.0% (19/20) |
 | Validation pass rate | 100.0% (9/9)  |
-| Avg steps            | 3.6           |
-| Failure distribution | tool_miss 2   |
+| Avg steps            | 3.5           |
+| Failure distribution | tool_miss 1   |
 
-Note: the two misses are `tc-06` (publish with no prior draft in a single turn) and `bt-04` (export of an unknown trigger follows the export instruction instead of `getCopySchema`).
+Note: the remaining miss is `tc-06` (publish with no prior draft in a single turn). Eval calls use temperature 0.

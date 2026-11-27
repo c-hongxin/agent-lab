@@ -80,6 +80,8 @@ export async function POST(req: Request) {
         "Answer in English. Data is demo fixtures only.",
       // 前端 stop() 会 abort 这次请求，服务端生成跟着停。
       abortSignal: req.signal,
+      // 与工作台、pnpm eval 一致。不设的话走 DeepSeek 默认采样，同一句会换工具。
+      temperature: 0,
       onFinish: async () => {
         // stdio 子进程要显式关掉，否则请求结束后 tsx 还挂着。
         await mcpClient.close();

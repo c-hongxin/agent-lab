@@ -37,7 +37,7 @@
 
 - 本仓怎么跑（cases / 命令 / 看哪些数）：evals/cases.jsonc（20+）+ pnpm eval；看工具选对率、校验通过率、平均步数、失败分布。
 - 改 prompt 或 schema 后怎么回归：用同一批 case 再跑一遍，对比数字，不靠手测两句。
-- 我读数字时注意到的局限：校验可以到 9/9；剩下的 tool_miss 是 tc-06（单轮没有草稿仍要求发布）和 bt-04（未知类型的导出按提示词去 export，考卷要 getCopySchema）。
+- 我读数字时注意到的局限：校验可以到 9/9；未知 code 已改为先 `getCopySchema`、不导出，`bt-04` 通过。剩下的 `tool_miss` 是 `tc-06`（单轮没有草稿仍要求发布）。
 
 **收获句：** 评测是固定考题 + 可对比数字；该配置必须回归。
 
@@ -48,9 +48,9 @@
 
 ## 7. 未做 / 下次加深（2～3 条）
 
-- 会话持久化（现在刷新就清空）
+- 工作台会话：刷新还在（地址栏 `?session=` + 服务端内存表）。`next dev` 重启会丢；主聊天和 `/hitl` 仍不持久化。
 - 有多步审批需求时再看 LangGraph
-- tc-06 / bt-04 先留着：前者是没有上文也强制发布，后者要先选定「未知 code 先查 schema」还是「考卷接受导出」。
+- tc-06：先留着，单轮没有上文也强制发布，会把空文案发出去。
 - Generative UI：模型只交结构化数据，版式由组件决定。previewNotification 的 execute 返回 trigger_type_code, title, content, cta_text, locale。MessageItem 看到 tool-previewNotification 且状态是 output-available 时，把 part.output 交给 NotificationPreviewCard。Markdown 做不到固定的标题、正文、按钮三格，模型一改措辞，版式就散。协议的版本就是这份字段清单：要加字段，同时改 tool 的返回值和 NotificationPreviewCardProps。旧消息里没有新字段时，卡片用默认值，例如 cta_text 缺了就显示 View details。
 - Eval：考卷固定，提示词和 schema 变了就再跑同一批题。pnpm eval 读 evals/cases.jsonc，用 evals/run.ts 打分。系统提示词只在 workbench-system.ts，页面和评测一起变。改 Zod 字段名也要再跑：mf-04 仍要求 missing 里有 announcement_summary，字段改名而考卷没改，这题会变成 missing_mismatch。对比的是同一份卷子上的四项数字，不是重新手测两句。
 - MCP：工作台的 tool 写在本仓库里，由 Route Handler 直接调用。MCP 是另一个进程里的工具包，本仓用 stdio 拉起 mcp/demo-triggers-server.ts，只暴露只读的 list_demo_triggers。/api/mcp-lab 用 createMCPClient 拿到工具再交给 streamText。/workbench 不走这套路。发布和试发仍是 Chat tool 加 HITL，不放进 MCP，避免一条可复用通道写业务。
