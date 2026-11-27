@@ -9,8 +9,8 @@ import { z } from "zod";
 
 import { resolveModel } from "@/lib/ai/resolve-model";
 
-import { publishCopy, sendTestEmail } from "@/lib/tools/write-tools";
 import { previewNotification } from "@/lib/tools/preview-tools";
+import { publishCopy, sendTestEmail } from "@/lib/tools/write-tools";
 
 export const maxDuration = 30;
 
@@ -53,6 +53,8 @@ export async function POST(req: Request) {
       "Answer in English.",
     // 前端 stop() 会 abort 这次请求，服务端生成跟着停。
     abortSignal: req.signal,
+    // 与工作台、pnpm eval 一致。不设的话走 DeepSeek 默认采样，同一句会换工具。
+    temperature: 0,
   });
 
   return result.toUIMessageStreamResponse();
