@@ -10,6 +10,7 @@ export const workbenchSystemPrompt =
   "After validateFields ok:true, draft zh-CN title and body, then call previewNotification. " +
   "After preview, or when the user asks to export locale / snippet, " +
   "call exportLocaleSnippet for zh-CN and en-US. " +
+  "Before exportLocaleSnippet, call getCopySchema with that trigger_type_code. If it returns ok:false, do not call exportLocaleSnippet. " +
   "When the user asks to publish, call publishCopy. " +
   "When the user asks to send a test email, call sendTestEmail. " +
   "If a write tool is denied, do not retry it. " +
